@@ -82,31 +82,60 @@ sub run {
 
 sub display {
     my $self = shift;
-    warn "$self->{mode} Not implemented yet!";
+    my $response = $self->{ds}->query('stats items');
+    $response = $self->{ds}->query('stats slabs');
+    print $response;
     return;
 }
 
 sub stats {
     my $self = shift;
-    warn "$self->{mode} Not implemented yet!";
-    return;
+    my $response = $self->{ds}->query('stats');
+    my @raw_stats = split(m/[\r\n]+/, $response);
+    my %stats;
+    for my $line (@raw_stats) {
+        if ($line =~ m/^STAT\s+(\S*)\s+(.*)/) {
+            $stats{$1} = $2;
+        }
+    }
+    print "# stats - $self->{addr}\n";
+    printf "#%23s  %16s\n", 'Field', 'Value';
+    for my $field (sort {$a cmp $b} (keys %stats)) {
+        printf ("%24s  %16s\n", $field, $stats{$field});
+    }
+    return 1;
 }
 
 sub settings {
     my $self = shift;
-    warn "$self->{mode} Not implemented yet!";
-    return;
+    my $response = $self->{ds}->query('stats settings');
+    my @raw_stats = split(m/[\r\n]+/, $response);
+    my %stats;
+    for my $line (@raw_stats) {
+        if ($line =~ m/^STAT\s+(\S*)\s+(.*)/) {
+            $stats{$1} = $2;
+        }
+    }
+    print "# stats settings - $self->{addr}\n";
+    printf "#%23s  %16s\n", 'Field', 'Value';
+    for my $field (sort {$a cmp $b} (keys %stats)) {
+        printf ("%24s  %16s\n", $field, $stats{$field});
+    }
+    return 1;
 }
 
 sub dump {
     my $self = shift;
-    warn "$self->{mode} Not implemented yet!";
+    my $response = $self->{ds}->query('stats items');
+    # And query 'stats cachedump' for each slab
+    print $response;
     return;
 }
 
 sub sizes {
     my $self = shift;
-    warn "$self->{mode} Not implemented yet!";
+    my $response = $self->{ds}->query('stats sizes');
+    print $response;
     return;
 }
 
