@@ -51,6 +51,7 @@ sub _query_one {
     my $body = q{};
     while (<$socket>) {
         last if m/^END/;
+        confess $_ if m/^SERVER_ERROR/;
         $body .= $_;
     }
 
