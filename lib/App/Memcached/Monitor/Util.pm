@@ -11,6 +11,7 @@ use Time::HiRes 'gettimeofday';
 our @EXPORT_OK = qw(
     looks_like_addr
     create_addr
+    is_unixsocket
     debug
 );
 our %EXPORT_TAGS = (all => \@EXPORT_OK);
@@ -22,7 +23,7 @@ use version; our $VERSION = 'v0.0.1';
 
 sub looks_like_addr {
     my $string = shift;
-    return $string if _is_sock($string);
+    return $string if is_unixsocket($string);
 
     my $hostname = $string;
     if ($hostname =~ m/([^\s:]+):\d+/) {
@@ -36,7 +37,7 @@ sub looks_like_addr {
 sub create_addr {
     my $base_addr = shift;
     return DEFAULT_ADDR() unless $base_addr;
-    return $base_addr if _is_sock($base_addr);
+    return $base_addr if is_unixsocket($base_addr);
     return $base_addr if ($base_addr =~ m/([^\s:]+):\d+/);
     return join(qw{:}, $base_addr, DEFAULT_PORT());
 }
@@ -49,7 +50,7 @@ sub debug {
         strftime('%F %T', localtime($sec)), $usec/1000, (caller)[1,2];
 }
 
-sub _is_sock {
+sub is_unixsocket {
     my $file = shift;
     return 1 if (-e $file && -S $file);
     return;
