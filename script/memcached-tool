@@ -35,12 +35,36 @@ B<memcached-tool> - A porting of L<memcached/memcached-tool|https://github.com/m
 
 =head1 SYNOPSIS
 
-    # ported style from original memcached-tool
+General:
+
+    # Ported style from original memcached-tool
     memcached-tool <host[:port] | /path/to/socket> [mode]
 
-    # show help or man
-    memcached-tool -h|--help
-    memcached-tool --man
+    # Without 1st arg, connects 127.0.0.1:11211 by default
+    memcached-tool [mode]
+
+    # You can provide <addr> or <mode> by option style
+    memcached-tool --addr|-a <host[:port] | /path/to/socket> --mode|-m <mode>
+    memcached-tool --mode|-m <mode>
+
+Modes Summary:
+
+    memcached-tool [addr]           # same with 'display'
+    memcached-tool [addr] display   # show slabs
+    memcached-tool [addr] stats     # show general stats
+    memcached-tool [addr] settings  # show settings stats
+    memcached-tool [addr] dump      # dumps keys and values
+
+Mode for Development:
+
+    memcached-tool [addr] sizes     # shows sizes stats
+
+Type C<memcached-tool man> to check the risk of this command.
+
+Help or Manual:
+
+    memcached-tool help|-h|--help
+    memcached-tool man|--man
 
 =head1 DESCRIPTION
 
@@ -124,6 +148,8 @@ memcached protocol.
 Show settings stats.
 
 =item B<sizes>
+
+Shows sizes stats.
 
 B<WARNING>: This is a development command.
 
