@@ -135,8 +135,19 @@ sub dump {
 sub sizes {
     my $self = shift;
     my $response = $self->{ds}->query('stats sizes');
-    print $response;
-    return;
+    my @raw_stats = split(m/[\r\n]+/, $response);
+    my %stats;
+    for my $line (@raw_stats) {
+        if ($line =~ m/^STAT\s+(\S*)\s+(.*)/) {
+            $stats{$1} = $2;
+        }
+    }
+    print "# stats sizes - $self->{addr}\n";
+    printf "#%17s  %12s\n", 'Size', 'Count';
+    for my $field (sort {$a cmp $b} (keys %stats)) {
+        printf ("%18s  %12s\n", $field, $stats{$field});
+    }
+    return 1;
 }
 
 1;
