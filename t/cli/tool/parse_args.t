@@ -5,6 +5,8 @@ use 5.008_001;
 use Test::More 0.98;
 
 use App::Memcached::Monitor::CLI::Tool;
+use App::Memcached::Monitor::Constants ':all';
+use App::Memcached::Monitor::Util ':all';
 
 my $Class = 'App::Memcached::Monitor::CLI::Tool';
 
@@ -19,7 +21,52 @@ subtest 'With normal single mode' => sub {
     my @pattern = qw/dump/;
     local @ARGV = @pattern;
     my $parsed = $Class->parse_args;
-    is($parsed->{mode}, $pattern[0], $pattern[0]);
+    is($parsed->{mode}, $pattern[0], 'mode='.$pattern[0]);
+    is($parsed->{addr}, DEFAULT_ADDR(), 'addr=(default)');
+};
+
+subtest 'With address:port and mode' => sub {
+    my @patterns = (
+        [qw/127.0.0.1:11211 display/],
+        [qw/www.google.com:443 stats/],
+    );
+    for my $ptn (@patterns) {
+        local @ARGV = @$ptn;
+        my $parsed = $Class->parse_args;
+        is($parsed->{mode}, $ptn->[1], 'mode='.$ptn->[1]);
+        is($parsed->{addr}, $ptn->[0], 'addr='.$ptn->[0]);
+    }
+};
+
+subtest 'With host and mode' => sub {
+    my @patterns = (
+        [qw/192.168.0.1 display/],
+        [qw/www.google.com stats/],
+    );
+    for my $ptn (@patterns) {
+        local @ARGV = @$ptn;
+        my $parsed = $Class->parse_args;
+        is($parsed->{mode}, $ptn->[1], 'mode='.$ptn->[1]);
+        is(
+            $parsed->{addr},
+            $ptn->[0].':'.DEFAULT_PORT(),
+            'addr='.$ptn->[0].':(default-port)',
+        );
+    }
+};
+
+subtest 'With addr and mode by option' => sub {
+    my @patterns = (
+        [qw/-a 192.168.0.1 -m stats/],
+        [qw/--addr www.google.com:1986 --mode settings/],
+    );
+    for my $ptn (@patterns) {
+        local @ARGV = @$ptn;
+        my $parsed = $Class->parse_args;
+        is($parsed->{mode}, $ptn->[3], '--mode='.$ptn->[3]);
+        my $addr_to_be = create_addr($ptn->[1]);
+        is($parsed->{addr}, $addr_to_be, '--addr='.$addr_to_be);
+    }
 };
 
 subtest 'With help/-h/--help' => sub {

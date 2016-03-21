@@ -49,7 +49,7 @@ sub parse_args {
     }
 
     %params = (
-        addr  => $params{addr} || $opts{addr},
+        addr  => create_addr($params{addr} || $opts{addr}),
         mode  => $params{mode} || $opts{mode} || $DEFAULT_MODE,
         debug => $opts{mode},
     );
