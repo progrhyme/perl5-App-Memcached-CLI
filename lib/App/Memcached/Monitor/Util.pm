@@ -15,6 +15,7 @@ use version; our $VERSION = 'v0.0.1';
 
 sub looks_like_addr {
     my $string = shift;
+    return;
 }
 
 1;

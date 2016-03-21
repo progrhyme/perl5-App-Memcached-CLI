@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use 5.008_001;
 
+use Pod::Usage;
+
 use version; our $VERSION = 'v0.0.1';
 
 use App::Memcached::Monitor::CLI::Tool;
@@ -15,7 +17,12 @@ if (__FILE__ eq $0) {
 }
 
 sub main {
-    my $params = App::Memcached::Monitor::CLI::Tool::parse_args(@ARGV);
+    my $Cli_Class = 'App::Memcached::Monitor::CLI::Tool';
+    my $params = $Cli_Class->parse_args(@ARGV);
+    pod2usage(-verbose => 1) unless $params->{mode};
+    pod2usage(-verbose => 1) if $params->{mode} eq 'help';
+    pod2usage(-verbose => 2) if $params->{mode} eq 'man';
+    $Cli_Class->new(%$params)->run
 }
 
 __END__

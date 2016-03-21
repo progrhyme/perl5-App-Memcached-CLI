@@ -10,26 +10,56 @@ use Class::Accessor::Lite (
 
 use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
+use List::Util qw(first);
 
 use App::Memcached::Monitor::Util ':all';
 
 use version; our $VERSION = 'v0.0.1';
 
+my @MODES        = qw(display dump stats settings sizes help man);
+my $DEFAULT_MODE = $MODES[0];
+
 sub new {
+    my $class  = shift;
+    my %params = @_;
+
+    bless \%params, $class;
 }
 
 sub parse_args {
-    my @args = @_;
+    my $class = shift;
 
     my %params; # will be passed to new()
-    if ( looks_like_addr($args[0]) ) {
-        $params{addr} = shift @args;
+    if (defined $ARGV[0] and looks_like_addr($ARGV[0])) {
+        $params{addr} = shift @ARGV;
+    }
+    if (defined $ARGV[0] and first { $_ eq $ARGV[0] } @MODES) {
+        $params{mode} = shift @ARGV;
     }
 
-    Getopt::Long::GetOptionsFromArray(
-        \@args, \%params, 'addr|a=s',
-        'mode|m=s', 'from|f=s', 'debug|d'
+    GetOptions(
+        \my %opts, 'addr|a=s', 'mode|m=s', 'debug|d', 'help|h', 'man'
+    ) or return +{};
+
+    if (defined $opts{man}) {
+        $params{mode} = 'man';
+    }
+    if (defined $opts{help}) {
+        $params{mode} = 'help';
+    }
+
+    %params = (
+        addr  => $params{addr} || $opts{addr},
+        mode  => $params{mode} || $opts{mode} || $DEFAULT_MODE,
+        debug => $opts{mode},
     );
+
+    return \%params;
+}
+
+sub run {
+    my $self = shift;
+    print "[START] $self->{mode}\n";
 }
 
 1;
