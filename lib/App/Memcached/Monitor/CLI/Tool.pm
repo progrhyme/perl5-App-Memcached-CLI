@@ -12,6 +12,7 @@ use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
 use List::Util qw(first);
 
+use App::Memcached::Monitor;
 use App::Memcached::Monitor::Util ':all';
 
 use version; our $VERSION = 'v0.0.1';
@@ -40,6 +41,7 @@ sub parse_args {
     GetOptions(
         \my %opts, 'addr|a=s', 'mode|m=s', 'debug|d', 'help|h', 'man'
     ) or return +{};
+    warn "Unevaluated args remain: @ARGV" if (@ARGV);
 
     if (defined $opts{man}) {
         $params{mode} = 'man';
@@ -47,19 +49,26 @@ sub parse_args {
     if (defined $opts{help}) {
         $params{mode} = 'help';
     }
+    if (defined $opts{debug}) {
+        $App::Memcached::Monitor::DEBUG = 1;
+    }
 
     %params = (
         addr  => create_addr($params{addr} || $opts{addr}),
         mode  => $params{mode} || $opts{mode} || $DEFAULT_MODE,
-        debug => $opts{mode},
+        debug => $opts{debug},
     );
+    unless (first { $_ eq $params{mode} } @MODES) {
+        warn "Invalid mode! $params{mode}";
+        delete $params{mode};
+    }
 
     return \%params;
 }
 
 sub run {
     my $self = shift;
-    print "[START] $self->{mode}\n";
+    debug "[START] $self->{mode} $self->{addr}";
 }
 
 1;
