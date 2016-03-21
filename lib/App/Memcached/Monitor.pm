@@ -5,7 +5,7 @@ use warnings;
 
 use version; our $VERSION = 'v0.0.1';
 
-
+our $DEBUG; # set by option
 
 1;
 __END__

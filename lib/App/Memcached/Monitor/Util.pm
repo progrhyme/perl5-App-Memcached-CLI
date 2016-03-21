@@ -5,13 +5,17 @@ use warnings;
 use 5.008_001;
 
 use Exporter 'import';
+use POSIX 'strftime';
+use Time::HiRes 'gettimeofday';
 
 our @EXPORT_OK = qw(
     looks_like_addr
     create_addr
+    debug
 );
 our %EXPORT_TAGS = (all => \@EXPORT_OK);
 
+use App::Memcached::Monitor;
 use App::Memcached::Monitor::Constants ':all';
 
 use version; our $VERSION = 'v0.0.1';
@@ -35,6 +39,14 @@ sub create_addr {
     return $base_addr if _is_sock($base_addr);
     return $base_addr if ($base_addr =~ m/([^\s:]+):\d+/);
     return join(qw{:}, $base_addr, DEFAULT_PORT());
+}
+
+sub debug {
+    my $message = shift;
+    return unless $App::Memcached::Monitor::DEBUG;
+    my ($sec, $usec) = gettimeofday;
+    printf STDERR "%s.%03d [DEBUG] $message at %s line %d.\n",
+        strftime('%F %T', localtime($sec)), $usec/1000, (caller)[1,2];
 }
 
 sub _is_sock {
