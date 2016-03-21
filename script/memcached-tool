@@ -38,26 +38,26 @@ B<memcached-tool> - A porting of L<memcached/memcached-tool|https://github.com/m
 General:
 
     # Ported style from original memcached-tool
-    memcached-tool <host[:port] | /path/to/socket> [mode]
+    memcached-tool <host[:port] | /path/to/socket> [mode] [options]
 
     # Without 1st arg, connects 127.0.0.1:11211 by default
-    memcached-tool [mode]
+    memcached-tool [mode] [options]
 
     # You can provide <addr> or <mode> by option style
-    memcached-tool --addr|-a <host[:port] | /path/to/socket> --mode|-m <mode>
-    memcached-tool --mode|-m <mode>
+    memcached-tool --addr|-a <host[:port] | /path/to/socket> --mode|-m <mode> [options]
+    memcached-tool --mode|-m <mode> [options]
 
 Modes Summary:
 
-    memcached-tool [addr]           # same with 'display'
-    memcached-tool [addr] display   # show slabs
-    memcached-tool [addr] stats     # show general stats
-    memcached-tool [addr] settings  # show settings stats
-    memcached-tool [addr] dump      # dumps keys and values
+    memcached-tool [addr] [options]          # same with 'display'
+    memcached-tool [addr] display  [options] # show slabs
+    memcached-tool [addr] stats    [options] # show general stats
+    memcached-tool [addr] settings [options] # show settings stats
+    memcached-tool [addr] dump     [options] # dumps keys and values
 
 Mode for Development:
 
-    memcached-tool [addr] sizes     # shows sizes stats
+    memcached-tool [addr] sizes [options]    # shows sizes stats
 
 Type C<memcached-tool man> to check the risk of this command.
 
@@ -161,6 +161,20 @@ minutes.
 
 Run this at your own risk. It is roadmapped to either make this feature optional
 or at least speed it up.
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-t|--timeout=Int>
+
+Sets connection timeout. Default is 5 seconds.
+
+=item B<-d|--debug>
+
+Shows debug logs.
 
 =back
 
