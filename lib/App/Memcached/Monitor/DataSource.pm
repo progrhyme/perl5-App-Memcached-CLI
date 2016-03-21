@@ -7,7 +7,7 @@ use 5.008_001;
 use Carp;
 use IO::Socket;
 
-use App::Memcached::Monitor::Util qw(is_unixsocket);
+use App::Memcached::Monitor::Util qw(is_unixsocket debug);
 
 sub new {
     my $class = shift;
@@ -33,9 +33,33 @@ sub connect {
     return $class->new(socket => $socket);
 }
 
+sub query {
+    my $self    = shift;
+    my @queries = @_;
+    my $response = q{};
+    $response .= $self->_query_one($_) for @queries;
+    return $response;
+}
+
+sub _query_one {
+    my $self  = shift;
+    my $query = shift;
+
+    my $socket = $self->{socket};
+    print $socket "$query\r\n";
+
+    my $body = q{};
+    while (<$socket>) {
+        last if m/^END/;
+        $body .= $_;
+    }
+
+    return $body;
+}
+
 sub DESTROY {
     my $self = shift;
-    $self->{socket}->close if $self->{socket};
+    if ($self->{socket}) { $self->{socket}->close; }
 }
 
 1;
