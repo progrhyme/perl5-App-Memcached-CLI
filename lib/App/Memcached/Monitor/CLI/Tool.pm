@@ -4,10 +4,6 @@ use strict;
 use warnings;
 use 5.008_001;
 
-use Class::Accessor::Lite (
-    ro => [qw/addr mode/],
-);
-
 use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
 use List::Util qw(first);
