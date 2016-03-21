@@ -82,10 +82,44 @@ sub run {
 
 sub display {
     my $self = shift;
-    my $response = $self->{ds}->query('stats items');
-    $response = $self->{ds}->query('stats slabs');
-    print $response;
-    return;
+
+    my %stats;
+    my $max;
+
+    my $resp_items = $self->{ds}->query('stats items');
+    for my $line (@$resp_items) {
+        if ($line =~ m/^STAT items:(\d+):(\w+) (\d+)/) {
+            $stats{$1}{$2} = $3;
+        }
+    }
+
+    my $resp_slabs = $self->{ds}->query('stats slabs');
+    for my $line (@$resp_slabs) {
+        if ($line =~ m/^STAT (\d+):(\w+) (\d+)/) {
+            $stats{$1}{$2} = $3;
+            $max = $1;
+        }
+    }
+
+    print "  #  Item_Size  Max_age   Pages   Count   Full?  Evicted Evict_Time OOM\n";
+    for my $class (1..$max) {
+        my $slab = $stats{$class};
+        next unless $slab->{total_pages};
+
+        my $size
+            = $slab->{chunk_size} < 1024 ? "$slab->{chunk_size}B"
+            : sprintf("%.1fK", $slab->{chunk_size} / 1024.0) ;
+
+        my $full = ($slab->{free_chunks_end} == 0) ? 'yes' : 'no';
+        printf(
+            "%3d %8s %9ds %7d %7d %7s %8d %8d %4d\n",
+            $class, $size, $slab->{age} || 0, $slab->{total_pages},
+            $slab->{number} || 0, $full, $slab->{evicted} || 0,
+            $slab->{evicted_time} || 0, $slab->{outofmemory} || 0,
+        );
+    }
+
+    return 1;
 }
 
 sub stats {
