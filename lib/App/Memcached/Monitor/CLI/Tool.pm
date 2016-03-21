@@ -9,6 +9,7 @@ use IO::Socket::INET;
 use List::Util qw(first);
 
 use App::Memcached::Monitor;
+use App::Memcached::Monitor::DataSource;
 use App::Memcached::Monitor::Util ':all';
 
 use version; our $VERSION = 'v0.0.1';
@@ -19,6 +20,10 @@ my $DEFAULT_MODE = $MODES[0];
 sub new {
     my $class  = shift;
     my %params = @_;
+    $params{ds}
+        = App::Memcached::Monitor::DataSource->connect(
+            $params{addr}, timeout => $params{timeout}
+        );
 
     bless \%params, $class;
 }
@@ -35,7 +40,8 @@ sub parse_args {
     }
 
     GetOptions(
-        \my %opts, 'addr|a=s', 'mode|m=s', 'debug|d', 'help|h', 'man'
+        \my %opts, 'addr|a=s', 'mode|m=s', 'timeout|t=i',
+        'debug|d', 'help|h', 'man',
     ) or return +{};
     warn "Unevaluated args remain: @ARGV" if (@ARGV);
 
@@ -50,9 +56,10 @@ sub parse_args {
     }
 
     %params = (
-        addr  => create_addr($params{addr} || $opts{addr}),
-        mode  => $params{mode} || $opts{mode} || $DEFAULT_MODE,
-        debug => $opts{debug},
+        addr    => create_addr($params{addr} || $opts{addr}),
+        mode    => $params{mode} || $opts{mode} || $DEFAULT_MODE,
+        timeout => $opts{timeout},
+        debug   => $opts{debug},
     );
     unless (first { $_ eq $params{mode} } @MODES) {
         warn "Invalid mode! $params{mode}";
@@ -64,7 +71,43 @@ sub parse_args {
 
 sub run {
     my $self = shift;
-    debug "[START] $self->{mode} $self->{addr}";
+    debug "[start] $self->{mode} $self->{addr}";
+    my $method = $self->{mode};
+    unless ($self->$method) {
+        warn "Command '$self->{mode}' seems failed. Set '--debug' option if you want to see debug logs.";
+        exit 1;
+    }
+    debug "[end] $self->{mode} $self->{addr}";
+}
+
+sub display {
+    my $self = shift;
+    warn "$self->{mode} Not implemented yet!";
+    return;
+}
+
+sub stats {
+    my $self = shift;
+    warn "$self->{mode} Not implemented yet!";
+    return;
+}
+
+sub settings {
+    my $self = shift;
+    warn "$self->{mode} Not implemented yet!";
+    return;
+}
+
+sub dump {
+    my $self = shift;
+    warn "$self->{mode} Not implemented yet!";
+    return;
+}
+
+sub sizes {
+    my $self = shift;
+    warn "$self->{mode} Not implemented yet!";
+    return;
 }
 
 1;
