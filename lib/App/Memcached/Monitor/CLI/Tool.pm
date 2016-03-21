@@ -124,10 +124,40 @@ sub settings {
 
 sub dump {
     my $self = shift;
+    my %items;
+    my $total;
+
     my $response = $self->{ds}->query('stats items');
-    # And query 'stats cachedump' for each slab
-    print $response;
-    return;
+    for my $line (@$response) {
+        if ($line =~ m/^STAT items:(\d*):number (\d*)/) {
+            $items{$1} = $2;
+            $total += $2;
+        }
+    }
+
+    print  STDERR "Dumping memcache contents\n";
+    printf STDERR "  Number of buckets: %d\n", scalar(keys(%items));
+    print  STDERR "  Number of items  : $total\n";
+
+    for my $bucket (sort(keys %items)) {
+        print STDERR "Dumping bucket $bucket - " . $items{$bucket} . " total items\n";
+        $response = $self->{ds}->query("stats cachedump $bucket $items{$bucket}");
+
+        my %expires;
+        for my $line (@$response) {
+            # Ex) ITEM foo [6 b; 1176415152 s]
+            if ($line =~ m/^ITEM (\S+) \[.* (\d+) s\]/) {
+                $expires{$1} = $2;
+            }
+        }
+
+        for my $key (keys %expires) {
+            my $data = $self->{ds}->get($key);
+            print "add $key $data->{flags} $expires{$key} $data->{length}\r\n$data->{value}\r\n";
+        }
+    }
+
+    return 1;
 }
 
 sub sizes {
