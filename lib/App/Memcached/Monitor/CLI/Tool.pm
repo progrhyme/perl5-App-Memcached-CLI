@@ -91,9 +91,8 @@ sub display {
 sub stats {
     my $self = shift;
     my $response = $self->{ds}->query('stats');
-    my @raw_stats = split(m/[\r\n]+/, $response);
     my %stats;
-    for my $line (@raw_stats) {
+    for my $line (@$response) {
         if ($line =~ m/^STAT\s+(\S*)\s+(.*)/) {
             $stats{$1} = $2;
         }
@@ -109,9 +108,8 @@ sub stats {
 sub settings {
     my $self = shift;
     my $response = $self->{ds}->query('stats settings');
-    my @raw_stats = split(m/[\r\n]+/, $response);
     my %stats;
-    for my $line (@raw_stats) {
+    for my $line (@$response) {
         if ($line =~ m/^STAT\s+(\S*)\s+(.*)/) {
             $stats{$1} = $2;
         }
@@ -135,9 +133,8 @@ sub dump {
 sub sizes {
     my $self = shift;
     my $response = $self->{ds}->query('stats sizes');
-    my @raw_stats = split(m/[\r\n]+/, $response);
     my %stats;
-    for my $line (@raw_stats) {
+    for my $line (@$response) {
         if ($line =~ m/^STAT\s+(\S*)\s+(.*)/) {
             $stats{$1} = $2;
         }

@@ -33,29 +33,23 @@ sub connect {
     return $class->new(socket => $socket);
 }
 
-sub query {
-    my $self    = shift;
-    my @queries = @_;
-    my $response = q{};
-    $response .= $self->_query_one($_) for @queries;
-    return $response;
-}
 
-sub _query_one {
+sub query {
     my $self  = shift;
     my $query = shift;
 
     my $socket = $self->{socket};
     print $socket "$query\r\n";
 
-    my $body = q{};
+    my @response;
     while (<$socket>) {
         last if m/^END/;
         confess $_ if m/^SERVER_ERROR/;
-        $body .= $_;
+        $_ =~ s/[\r\n]+$//;
+        push @response, $_;
     }
 
-    return $body;
+    return \@response;
 }
 
 sub DESTROY {
