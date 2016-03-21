@@ -33,6 +33,28 @@ sub connect {
     return $class->new(socket => $socket);
 }
 
+sub get {
+    my $self = shift;
+    my $key  = shift;
+
+    my $socket = $self->{socket};
+    print $socket "get $key\r\n";
+
+    my %data = (key => $key);
+    my $response = <$socket>;
+    if ($response =~ m/VALUE \S+ (\d+) (\d+)/) {
+        $data{flags}  = $1;
+        $data{length} = $2;
+        read $socket, $response, $data{length};
+        $data{value} = $response;
+
+        while ($response !~ m/^END/) { $response = <$socket>; }
+    } else {
+        warn "KEY $key not found in $response";
+    }
+
+    return \%data;
+}
 
 sub query {
     my $self  = shift;
