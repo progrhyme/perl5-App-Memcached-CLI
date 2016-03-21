@@ -1,5 +1,6 @@
 use strict;
 use warnings;
+use 5.008_001;
 
 use Test::More 0.98;
 use File::Find;
