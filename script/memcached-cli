@@ -19,9 +19,8 @@ if (__FILE__ eq $0) {
 sub main {
     my $Cli_Class = 'App::Memcached::CLI::Main';
     my $params = $Cli_Class->parse_args;
-    exit 1 unless $params->{mode};
-    pod2usage(-verbose => 1) if $params->{mode} eq 'help';
-    pod2usage(-verbose => 2) if $params->{mode} eq 'man';
+    pod2usage(-verbose => 1) if $params->{help};
+    pod2usage(-verbose => 2) if $params->{man};
     $Cli_Class->new(%$params)->run
 }
 
@@ -44,8 +43,8 @@ B<memcached-cli> - Interactive CLI for Memcached
 
 Help or Manual:
 
-    memcached-cli help|-h|--help
-    memcached-cli man|--man
+    memcached-cli -h|--help
+    memcached-cli --man
 
 =head1 DESCRIPTION
 

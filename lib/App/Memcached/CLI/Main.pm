@@ -36,43 +36,25 @@ sub parse_args {
     if (defined $ARGV[0] and looks_like_addr($ARGV[0])) {
         $params{addr} = shift @ARGV;
     }
-    if (defined $ARGV[0] and first { $_ eq $ARGV[0] } @MODES) {
-        $params{mode} = shift @ARGV;
-    }
-
     GetOptions(
-        \my %opts, 'addr|a=s', 'mode|m=s', 'timeout|t=i',
+        \my %opts, 'addr|a=s', 'timeout|t=i',
         'debug|d', 'help|h', 'man',
     ) or return +{};
     warn "Unevaluated args remain: @ARGV" if (@ARGV);
 
-    if (defined $opts{man}) {
-        $params{mode} = 'man';
-    }
-    if (defined $opts{help}) {
-        $params{mode} = 'help';
-    }
     if (defined $opts{debug}) {
         $App::Memcached::CLI::DEBUG = 1;
     }
 
-    %params = (
-        addr    => create_addr($params{addr} || $opts{addr}),
-        mode    => $params{mode} || $opts{mode} || $DEFAULT_MODE,
-        timeout => $opts{timeout},
-        debug   => $opts{debug},
-    );
-    unless (first { $_ eq $params{mode} } @MODES) {
-        warn "Invalid mode! $params{mode}";
-        delete $params{mode};
-    }
+    %params = (%opts, %params);
+    $params{addr} = create_addr($params{addr});
 
     return \%params;
 }
 
 sub run {
     my $self = shift;
-    debug "[start] $self->{mode} $self->{addr}";
+    debug "[start] $self->{addr}";
     my $isa_tty = -t STDIN && (-t STDOUT || !(-f STDOUT || -c STDOUT));
     unless ($isa_tty) {
         croak "TTY Not Found! Quit.";
@@ -89,7 +71,7 @@ sub run {
         }
         last if $exit_loop;
     }
-    debug "[end] $self->{mode} $self->{addr}";
+    debug "[end] $self->{addr}";
 }
 
 sub prompt {
