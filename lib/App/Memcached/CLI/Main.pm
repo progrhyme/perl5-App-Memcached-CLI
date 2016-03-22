@@ -15,8 +15,7 @@ use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.0.1';
 
-my @MODES        = qw(display stats settings help man);
-my $DEFAULT_MODE = $MODES[0];
+my @MODES = qw(display stats settings);
 
 sub new {
     my $class  = shift;
