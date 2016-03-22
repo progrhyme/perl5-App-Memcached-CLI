@@ -15,7 +15,7 @@ use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.0.1';
 
-my @MODES        = qw(display dump stats settings sizes help man);
+my @MODES        = qw(display stats settings help man);
 my $DEFAULT_MODE = $MODES[0];
 
 sub new {
@@ -159,61 +159,6 @@ sub settings {
     printf "#%23s  %16s\n", 'Field', 'Value';
     for my $field (sort {$a cmp $b} (keys %stats)) {
         printf ("%24s  %16s\n", $field, $stats{$field});
-    }
-    return 1;
-}
-
-sub dump {
-    my $self = shift;
-    my %items;
-    my $total;
-
-    my $response = $self->{ds}->query('stats items');
-    for my $line (@$response) {
-        if ($line =~ m/^STAT items:(\d*):number (\d*)/) {
-            $items{$1} = $2;
-            $total += $2;
-        }
-    }
-
-    print  STDERR "Dumping memcache contents\n";
-    printf STDERR "  Number of buckets: %d\n", scalar(keys(%items));
-    print  STDERR "  Number of items  : $total\n";
-
-    for my $bucket (sort(keys %items)) {
-        print STDERR "Dumping bucket $bucket - " . $items{$bucket} . " total items\n";
-        $response = $self->{ds}->query("stats cachedump $bucket $items{$bucket}");
-
-        my %expires;
-        for my $line (@$response) {
-            # Ex) ITEM foo [6 b; 1176415152 s]
-            if ($line =~ m/^ITEM (\S+) \[.* (\d+) s\]/) {
-                $expires{$1} = $2;
-            }
-        }
-
-        for my $key (keys %expires) {
-            my $data = $self->{ds}->get($key);
-            print "add $key $data->{flags} $expires{$key} $data->{length}\r\n$data->{value}\r\n";
-        }
-    }
-
-    return 1;
-}
-
-sub sizes {
-    my $self = shift;
-    my $response = $self->{ds}->query('stats sizes');
-    my %stats;
-    for my $line (@$response) {
-        if ($line =~ m/^STAT\s+(\S*)\s+(.*)/) {
-            $stats{$1} = $2;
-        }
-    }
-    print "# stats sizes - $self->{addr}\n";
-    printf "#%17s  %12s\n", 'Size', 'Count';
-    for my $field (sort {$a cmp $b} (keys %stats)) {
-        printf ("%18s  %12s\n", $field, $stats{$field});
     }
     return 1;
 }
