@@ -16,12 +16,18 @@ use App::Memcached::CLI::Util ':all';
 use version; our $VERSION = 'v0.0.1';
 
 my %COMMANDS = (
+    'help'     => 'help',
+    '\h'       => 'help',
     'quit'     => 'quit',
     '\q'       => 'quit',
     'exit'     => 'quit',
     'display'  => 'display',
+    '\d'       => 'display',
     'stats'    => 'stats',
+    '\s'       => 'stats',
     'settings' => 'settings',
+    'config'   => 'settings',
+    '\c'       => 'settings',
 );
 
 sub new {
@@ -70,6 +76,7 @@ sub run {
         $exit_loop = 1;
         warn "Caught INT or QUIT. Exiting...";
     };
+    print "Type '\\h' or 'help' to show help.\n\n";
     while (1) {
         my $command = $self->prompt;
         if ($command) {
@@ -95,6 +102,22 @@ sub prompt {
     chomp $input;
 
     return $COMMANDS{$input};
+}
+
+sub help {
+    my @commands = (
+        ['\h, help', 'Show help (this)'],
+        ['\q, quit, exit', 'Exit'],
+        ['\d, display', 'Display slabs info'],
+        ['\s, stats', 'Show stats'],
+        ['\c, config, settings', 'Show settings'],
+    );
+    my $body = "\n[Available Commands]\n";
+    for my $cmd (@commands) {
+        my $space = ' ' x 4;
+        $body .= sprintf "%s%-20s%s%s\n", $space, $cmd->[0], $space, $cmd->[1];
+    }
+    print "$body\n";
 }
 
 sub display {
