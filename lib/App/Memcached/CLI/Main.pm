@@ -1,4 +1,4 @@
-package App::Memcached::CLI::CLI::Tool;
+package App::Memcached::CLI::Main;
 
 use strict;
 use warnings;
@@ -218,15 +218,15 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI::CLI::Tool - It's new $module
+App::Memcached::CLI::Main - It's new $module
 
 =head1 SYNOPSIS
 
-    use App::Memcached::CLI::CLI::Tool;
+    use App::Memcached::CLI::Main;
 
 =head1 DESCRIPTION
 
-App::Memcached::CLI::CLI::Tool is ...
+App::Memcached::CLI::Main is ...
 
 =head1 LICENSE
 

@@ -4,11 +4,11 @@ use 5.008_001;
 
 use Test::More 0.98;
 
-use App::Memcached::CLI::CLI::Tool;
+use App::Memcached::CLI::Main;
 use App::Memcached::CLI::Constants ':all';
 use App::Memcached::CLI::Util ':all';
 
-my $Class = 'App::Memcached::CLI::CLI::Tool';
+my $Class = 'App::Memcached::CLI::Main';
 
 subtest 'With no argument' => sub {
     my $default = 'display';
