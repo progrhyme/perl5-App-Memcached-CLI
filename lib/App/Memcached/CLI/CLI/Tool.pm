@@ -1,4 +1,4 @@
-package App::Memcached::Monitor::CLI::Tool;
+package App::Memcached::CLI::CLI::Tool;
 
 use strict;
 use warnings;
@@ -8,9 +8,9 @@ use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
 use List::Util qw(first);
 
-use App::Memcached::Monitor;
-use App::Memcached::Monitor::DataSource;
-use App::Memcached::Monitor::Util ':all';
+use App::Memcached::CLI;
+use App::Memcached::CLI::DataSource;
+use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.0.1';
 
@@ -21,7 +21,7 @@ sub new {
     my $class  = shift;
     my %params = @_;
     $params{ds}
-        = App::Memcached::Monitor::DataSource->connect(
+        = App::Memcached::CLI::DataSource->connect(
             $params{addr}, timeout => $params{timeout}
         );
 
@@ -52,7 +52,7 @@ sub parse_args {
         $params{mode} = 'help';
     }
     if (defined $opts{debug}) {
-        $App::Memcached::Monitor::DEBUG = 1;
+        $App::Memcached::CLI::DEBUG = 1;
     }
 
     %params = (
@@ -218,15 +218,15 @@ __END__
 
 =head1 NAME
 
-App::Memcached::Monitor::CLI::Tool - It's new $module
+App::Memcached::CLI::CLI::Tool - It's new $module
 
 =head1 SYNOPSIS
 
-    use App::Memcached::Monitor::CLI::Tool;
+    use App::Memcached::CLI::CLI::Tool;
 
 =head1 DESCRIPTION
 
-App::Memcached::Monitor::CLI::Tool is ...
+App::Memcached::CLI::CLI::Tool is ...
 
 =head1 LICENSE
 

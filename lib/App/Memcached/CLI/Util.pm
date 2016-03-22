@@ -1,4 +1,4 @@
-package App::Memcached::Monitor::Util;
+package App::Memcached::CLI::Util;
 
 use strict;
 use warnings;
@@ -16,8 +16,8 @@ our @EXPORT_OK = qw(
 );
 our %EXPORT_TAGS = (all => \@EXPORT_OK);
 
-use App::Memcached::Monitor;
-use App::Memcached::Monitor::Constants ':all';
+use App::Memcached::CLI;
+use App::Memcached::CLI::Constants ':all';
 
 use version; our $VERSION = 'v0.0.1';
 
@@ -44,7 +44,7 @@ sub create_addr {
 
 sub debug {
     my $message = shift;
-    return unless $App::Memcached::Monitor::DEBUG;
+    return unless $App::Memcached::CLI::DEBUG;
     my ($sec, $usec) = gettimeofday;
     printf STDERR "%s.%03d [DEBUG] $message at %s line %d.\n",
         strftime('%F %T', localtime($sec)), $usec/1000, (caller)[1,2];
@@ -63,15 +63,15 @@ __END__
 
 =head1 NAME
 
-App::Memcached::Monitor::Util - It's new $module
+App::Memcached::CLI::Util - It's new $module
 
 =head1 SYNOPSIS
 
-    use App::Memcached::Monitor::Util;
+    use App::Memcached::CLI::Util;
 
 =head1 DESCRIPTION
 
-App::Memcached::Monitor::Util is ...
+App::Memcached::CLI::Util is ...
 
 =head1 LICENSE
 

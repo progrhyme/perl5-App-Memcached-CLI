@@ -4,8 +4,8 @@ use 5.008_001;
 
 use Test::More 0.98;
 
-use App::Memcached::Monitor::Constants ':all';
-use App::Memcached::Monitor::Util ':all';
+use App::Memcached::CLI::Constants ':all';
+use App::Memcached::CLI::Util ':all';
 
 subtest 'With no args' => sub {
     is(create_addr(), DEFAULT_ADDR(), DEFAULT_ADDR());

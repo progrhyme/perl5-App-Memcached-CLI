@@ -8,7 +8,7 @@ use Pod::Usage;
 
 use version; our $VERSION = 'v0.0.1';
 
-use App::Memcached::Monitor::CLI::Tool;
+use App::Memcached::CLI::CLI::Tool;
 
 if (__FILE__ eq $0) {
     main()
@@ -17,7 +17,7 @@ if (__FILE__ eq $0) {
 }
 
 sub main {
-    my $Cli_Class = 'App::Memcached::Monitor::CLI::Tool';
+    my $Cli_Class = 'App::Memcached::CLI::CLI::Tool';
     my $params = $Cli_Class->parse_args;
     exit 1 unless $params->{mode};
     pod2usage(-verbose => 1) if $params->{mode} eq 'help';
@@ -180,7 +180,7 @@ Shows debug logs.
 
 =head1 SEE ALSO
 
-L<App::Memcached::Monitor>,
+L<App::Memcached::CLI>,
 B<memcached(1)>,
 L<http://www.memcached.org/>
 

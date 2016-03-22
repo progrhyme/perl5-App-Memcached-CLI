@@ -1,4 +1,4 @@
-package App::Memcached::Monitor::Constants;
+package App::Memcached::CLI::Constants;
 
 use strict;
 use warnings;
@@ -26,15 +26,15 @@ __END__
 
 =head1 NAME
 
-App::Memcached::Monitor::Constants - It's new $module
+App::Memcached::CLI::Constants - It's new $module
 
 =head1 SYNOPSIS
 
-    use App::Memcached::Monitor::Constants;
+    use App::Memcached::CLI::Constants;
 
 =head1 DESCRIPTION
 
-App::Memcached::Monitor::Constants is ...
+App::Memcached::CLI::Constants is ...
 
 =head1 LICENSE
 

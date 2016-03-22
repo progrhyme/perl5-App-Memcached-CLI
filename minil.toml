@@ -1,4 +1,4 @@
-name = "App-Memcached-Monitor"
+name = "App-Memcached-CLI"
 # badges = ["travis"]
 authority="cpan:KEYAMB"
 
