@@ -1,0 +1,87 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use 5.008_001;
+
+use Pod::Usage;
+
+use version; our $VERSION = 'v0.0.1';
+
+use App::Memcached::CLI::Main;
+
+if (__FILE__ eq $0) {
+    main()
+} else {
+    return 1;
+}
+
+sub main {
+    my $Cli_Class = 'App::Memcached::CLI::Main';
+    my $params = $Cli_Class->parse_args;
+    exit 1 unless $params->{mode};
+    pod2usage(-verbose => 1) if $params->{mode} eq 'help';
+    pod2usage(-verbose => 2) if $params->{mode} eq 'man';
+    $Cli_Class->new(%$params)->run
+}
+
+__END__
+
+=encoding utf-8
+
+=head1 NAME
+
+B<memcached-cli> - Interactive CLI for Memcached
+
+=head1 SYNOPSIS
+
+    memcached-cli <host[:port] | /path/to/socket> [options]
+
+    # Without 1st arg, connects 127.0.0.1:11211 by default
+    memcached-cli [options]
+    # You can provide <addr> by option style
+    memcached-cli --addr|-a <host[:port] | /path/to/socket> [options]
+
+Help or Manual:
+
+    memcached-cli help|-h|--help
+    memcached-cli man|--man
+
+=head1 DESCRIPTION
+
+Comming soon.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-t|--timeout=Int>
+
+Sets connection timeout. Default is 5 seconds.
+
+=item B<-d|--debug>
+
+Shows debug logs.
+
+=back
+
+=head1 SEE ALSO
+
+L<App::Memcached::CLI>,
+B<memcached(1)>,
+L<http://www.memcached.org/>
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+Copyright (C) 2015 YASUTAKE Kiyoshi.
+
+This library is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.  That means either (a) the GNU General Public
+License or (b) the Artistic License.
+
+=cut
+
