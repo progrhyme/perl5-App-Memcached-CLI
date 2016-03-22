@@ -15,7 +15,14 @@ use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.0.1';
 
-my @MODES = qw(display stats settings);
+my %COMMANDS = (
+    'quit'     => 'quit',
+    '\q'       => 'quit',
+    'exit'     => 'quit',
+    'display'  => 'display',
+    'stats'    => 'stats',
+    'settings' => 'settings',
+);
 
 sub new {
     my $class  = shift;
@@ -65,8 +72,12 @@ sub run {
     };
     while (1) {
         my $command = $self->prompt;
-        if ($command && first { $_ eq $command } @MODES) {
-            my $ret = $self->$command;
+        if ($command) {
+            if ($command eq 'quit') {
+                $exit_loop = 1;
+            } else {
+                my $ret = $self->$command;
+            }
         }
         last if $exit_loop;
     }
@@ -83,7 +94,7 @@ sub prompt {
     my $input = <STDIN>;
     chomp $input;
 
-    return $input;
+    return $COMMANDS{$input};
 }
 
 sub display {
