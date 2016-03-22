@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use 5.008_001;
 
+use Carp;
 use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
 use List::Util qw(first);
@@ -72,12 +73,36 @@ sub parse_args {
 sub run {
     my $self = shift;
     debug "[start] $self->{mode} $self->{addr}";
-    my $method = $self->{mode};
-    unless ($self->$method) {
-        warn "Command '$self->{mode}' seems failed. Set '--debug' option if you want to see debug logs.";
-        exit 1;
+    my $isa_tty = -t STDIN && (-t STDOUT || !(-f STDOUT || -c STDOUT));
+    unless ($isa_tty) {
+        croak "TTY Not Found! Quit.";
+    }
+    my $exit_loop = 0;
+    local $SIG{INT} = local $SIG{QUIT} = sub {
+        $exit_loop = 1;
+        warn "Caught INT or QUIT. Exiting...";
+    };
+    while (1) {
+        my $command = $self->prompt;
+        if ($command && first { $_ eq $command } @MODES) {
+            my $ret = $self->$command;
+        }
+        last if $exit_loop;
     }
     debug "[end] $self->{mode} $self->{addr}";
+}
+
+sub prompt {
+    my $self = shift;
+
+    local $| = 1;
+    local $\;
+
+    print "memcached\@$self->{addr}> ";
+    my $input = <STDIN>;
+    chomp $input;
+
+    return $input;
 }
 
 sub display {
