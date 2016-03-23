@@ -95,6 +95,9 @@ sub run {
         }
 
         my $ret = $self->$command(@args);
+        unless ($ret) {
+            print "Command seems failed. Type \\h $command for help.\n\n";
+        }
     }
     debug "[end] $self->{addr}";
 }
@@ -118,7 +121,8 @@ sub prompt {
 }
 
 sub help {
-    my $self = shift;
+    my $self    = shift;
+    my $command = shift || q{};
 
     my @command_info = (
         +{
@@ -143,18 +147,49 @@ sub help {
         },
         +{
             command => 'cachedump',
-            summary => 'Show cachedump',
+            summary => 'Show cachedump of specified slab',
+            description => <<'EODESC',
+Usage:
+    > cachedump <CLASS> <NUMBER>
+    > cachedump 1 10
+    > cachedump 3     # default <NUMBER>
+EODESC
         },
     );
-    my $body = "\n[Available Commands]\n";
+    my $body   = q{};
+    my $space  = ' ' x 4;
+    if (my $function = $COMMAND_OF{$command}) {
+        my $aliases = join(q{, }, _sorted_aliases_of($function));
+        my $info = (grep { $_->{command} eq $function } @command_info)[0];
+        $body .= sprintf qq{\n[Command "%s"]\n\n}, $command;
+        $body .= "Summary:\n";
+        $body .= sprintf "%s%s\n\n", $space, $info->{summary};
+        $body .= "Aliases:\n";
+        $body .= sprintf "%s%s\n\n", $space, $aliases;
+        if ($info->{description}) {
+            $body .= $info->{description};
+            $body .= "\n";
+        }
+        print $body;
+        return 1;
+    } elsif ($command) {
+        $body .= "Unknown command: $command\n";
+    }
+    $body .= "\n[Available Commands]\n";
     for my $info (@command_info) {
         my $cmd = $info->{command};
-        my $space = ' ' x 4;
-        my @aliases = @{$COMMAND2ALIASES{$cmd}};
-        my $commands = join(q{, }, shift @aliases, $cmd, @aliases);
-        $body .= sprintf "%s%-20s%s%s\n", $space, $commands, $space, $info->{summary};
+        my $commands = join(q{, }, _sorted_aliases_of($cmd));
+        $body .= sprintf "%-20s%s%s\n", $commands, $space, $info->{summary};
     }
-    print "$body\n";
+    $body .= "\nType \\h <command> for each.\n\n";
+    print $body;
+    return 1;
+}
+
+sub _sorted_aliases_of {
+    my $command = shift;
+    my @aliases = @{$COMMAND2ALIASES{$command}};
+    return (shift @aliases, $command, @aliases);
 }
 
 sub cachedump {
