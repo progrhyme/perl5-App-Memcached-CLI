@@ -4,3 +4,4 @@ authority="cpan:KEYAMB"
 
 module_maker="ModuleBuildTiny"
 
+readme_from="script/memcached-cli"

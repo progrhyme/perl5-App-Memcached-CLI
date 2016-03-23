@@ -52,6 +52,17 @@
       }
    },
    "release_status" : "unstable",
-   "version" : "0.01",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/key-amb/perl5-App-Memcached-CLI/issues"
+      },
+      "homepage" : "https://github.com/key-amb/perl5-App-Memcached-CLI",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/key-amb/perl5-App-Memcached-CLI.git",
+         "web" : "https://github.com/key-amb/perl5-App-Memcached-CLI"
+      }
+   },
+   "version" : "v0.0.1",
    "x_authority" : "cpan:KEYAMB"
 }
