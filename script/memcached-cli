@@ -78,7 +78,7 @@ Shows debug logs.
 
 =head1 SEE ALSO
 
-L<App::Memcached::CLI>,
+L<App::Memcached::CLI::Main>,
 B<memcached(1)>,
 L<http://www.memcached.org/>
 

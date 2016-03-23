@@ -14,7 +14,7 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI - It's new $module
+App::Memcached::CLI - Interactive CLI for Memcached
 
 =head1 SYNOPSIS
 
@@ -22,7 +22,13 @@ App::Memcached::CLI - It's new $module
 
 =head1 DESCRIPTION
 
-App::Memcached::CLI is ...
+This package provides interactive CLI for Memcached.
+
+=head1 SEE ALSO
+
+L<memcached-cli>,
+L<App::Memcached::CLI::Main>,
+L<http://www.memcached.org/>
 
 =head1 LICENSE
 

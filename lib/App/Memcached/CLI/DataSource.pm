@@ -86,15 +86,19 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI::DataSource - It's new $module
+App::Memcached::CLI::DataSource - Data Access Interface of Memcached server
 
 =head1 SYNOPSIS
 
     use App::Memcached::CLI::DataSource;
+    my $ds = App::Memcached::CLI::DataSource->connect(
+            $params{addr}, timeout => $params{timeout}
+        );
+    my $stats = $ds->query('stats');
 
 =head1 DESCRIPTION
 
-App::Memcached::CLI::DataSource is ...
+This provides data access interface for Memcached server.
 
 =head1 LICENSE
 

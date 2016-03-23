@@ -63,15 +63,20 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI::Util - It's new $module
+App::Memcached::CLI::Util - Utility functions for memcached-cli
 
 =head1 SYNOPSIS
 
-    use App::Memcached::CLI::Util;
+    use App::Memcached::CLI::Util ':all';
+    if (looks_like_addr($given)) {
+        ...
+    }
+    my $addr = is_unixsocket($given) ? $given : create_addr($hostname);
+    debug "foo";
 
 =head1 DESCRIPTION
 
-App::Memcached::CLI::Util is ...
+This module provides utility functions for other modules.
 
 =head1 LICENSE
 

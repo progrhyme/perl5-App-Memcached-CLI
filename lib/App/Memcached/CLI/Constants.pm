@@ -26,15 +26,17 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI::Constants - It's new $module
+App::Memcached::CLI::Constants - Provides constants
 
 =head1 SYNOPSIS
 
-    use App::Memcached::CLI::Constants;
+    use App::Memcached::CLI::Constants ':all';
+    my $addr = DEFAULT_ADDR();
+    my $addr = $hostname . ':' . $DEFAULT_PORT;
 
 =head1 DESCRIPTION
 
-App::Memcached::CLI::Constants is ...
+This module provides constants for other modules.
 
 =head1 LICENSE
 

@@ -299,15 +299,23 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI::Main - It's new $module
+App::Memcached::CLI::Main - Interactive CLI for Memcached
 
 =head1 SYNOPSIS
 
     use App::Memcached::CLI::Main;
+    my $params = $Cli_Class->parse_args;
+    $Cli_Class->new(%$params)->run;
 
 =head1 DESCRIPTION
 
-App::Memcached::CLI::Main is ...
+This module is used for interactive CLI of Memcached.
+
+See L<memcached-cli> for details.
+
+=head1 SEE ALSO
+
+L<memcached-cli>
 
 =head1 LICENSE
 
