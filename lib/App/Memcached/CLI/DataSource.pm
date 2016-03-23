@@ -25,7 +25,7 @@ sub connect {
         return IO::Socket::INET->new(
             PeerAddr => $addr,
             Proto    => 'tcp',
-            Timeout  => $opts{timeout} || 5,
+            Timeout  => $opts{timeout} || 1,
         );
     }->();
     confess "Can't connect to $addr" unless $socket;

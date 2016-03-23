@@ -38,10 +38,18 @@ my $DEFAULT_CACHEDUMP_SIZE = 20;
 sub new {
     my $class  = shift;
     my %params = @_;
-    $params{ds}
-        = App::Memcached::CLI::DataSource->connect(
-            $params{addr}, timeout => $params{timeout}
-        );
+
+    eval {
+        $params{ds}
+            = App::Memcached::CLI::DataSource->connect(
+                $params{addr}, timeout => $params{timeout}
+            );
+    };
+    if ($@) {
+        warn "Can't connect to Memcached server! Addr=$params{addr}";
+        debug "ERROR: " . $@;
+        return;
+    }
 
     bless \%params, $class;
 }

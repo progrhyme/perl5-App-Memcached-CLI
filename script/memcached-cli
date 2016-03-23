@@ -21,7 +21,8 @@ sub main {
     my $params = $Cli_Class->parse_args;
     pod2usage(-verbose => 1) if $params->{help};
     pod2usage(-verbose => 2) if $params->{man};
-    $Cli_Class->new(%$params)->run
+    my $cli = $Cli_Class->new(%$params) or pod2usage(-verbose => 1);
+    $cli->run;
 }
 
 __END__
@@ -67,7 +68,7 @@ command you run.
 
 =item B<-t|--timeout=Int>
 
-Sets connection timeout. Default is 5 seconds.
+Sets connection timeout. Default is 1 seconds.
 
 =item B<-d|--debug>
 
