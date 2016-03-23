@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Interactive CLI for Memcached",
    "author" : [
       "YASUTAKE Kiyoshi <yasutake.kiyoshi@gmail.com>"
    ],
@@ -64,6 +64,6 @@
          "web" : "https://github.com/key-amb/perl5-App-Memcached-CLI"
       }
    },
-   "version" : "v0.2.0",
+   "version" : "v0.2.1",
    "x_authority" : "cpan:KEYAMB"
 }

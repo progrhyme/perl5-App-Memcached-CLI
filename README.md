@@ -50,7 +50,7 @@ command you run.
 
 # SEE ALSO
 
-[App::Memcached::CLI](https://metacpan.org/pod/App::Memcached::CLI),
+[App::Memcached::CLI::Main](https://metacpan.org/pod/App::Memcached::CLI::Main),
 **memcached(1)**,
 [http://www.memcached.org/](http://www.memcached.org/)
 

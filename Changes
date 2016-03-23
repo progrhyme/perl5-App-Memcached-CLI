@@ -2,6 +2,10 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.2.1 2016-03-23T08:12:40Z
+
+    - Update Pod
+
 v0.2.0 2016-03-23T05:09:28Z
 
     - Improve: enable command history by Term::ReadLine support
