@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI.svg?branch=master)](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI)
 # NAME
 
 __memcached-cli__ - Interactive CLI for Memcached
