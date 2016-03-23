@@ -42,6 +42,7 @@
       },
       "runtime" : {
          "requires" : {
+            "Term::ReadLine" : "1.14",
             "perl" : "5.008001"
          }
       },
@@ -63,6 +64,6 @@
          "web" : "https://github.com/key-amb/perl5-App-Memcached-CLI"
       }
    },
-   "version" : "v0.1.1",
+   "version" : "v0.2.0",
    "x_authority" : "cpan:KEYAMB"
 }
