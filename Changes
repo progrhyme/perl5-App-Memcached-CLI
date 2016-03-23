@@ -2,6 +2,10 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.1.1 2016-03-23T04:25:09Z
+
+    - Improve "help" in Interactive mode
+
 v0.1.0 2016-03-23T01:14:45Z
 
     - Initial release
