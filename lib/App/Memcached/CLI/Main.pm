@@ -21,11 +21,11 @@ use version; our $VERSION = 'v0.2.2';
 my %COMMAND2ALIASES = (
     help      => ['\h'],
     quit      => [qw(\q exit)],
-    get       => [],
     display   => [qw(\d)],
     stats     => [qw(\s)],
     settings  => [qw(\c config)],
     cachedump => [qw(\cd dump)],
+    get       => [],
 );
 my %COMMAND_OF;
 while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
@@ -141,14 +141,6 @@ sub help {
             summary => 'Exit',
         },
         +{
-            command => 'get',
-            summary => 'Get data of KEY',
-            description => <<'EODESC',
-Usage:
-    > get <KEY>
-EODESC
-        },
-        +{
             command => 'display',
             summary => 'Display slabs info',
         },
@@ -168,6 +160,14 @@ Usage:
     > cachedump <CLASS> <NUMBER>
     > cachedump 1 10
     > cachedump 3     # default <NUMBER>
+EODESC
+        },
+        +{
+            command => 'get',
+            summary => 'Get data of KEY',
+            description => <<'EODESC',
+Usage:
+    > get <KEY>
 EODESC
         },
     );
