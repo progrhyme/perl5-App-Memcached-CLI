@@ -77,16 +77,15 @@ sub run {
         warn "Caught INT or QUIT. Exiting...";
     };
     print "Type '\\h' or 'help' to show help.\n\n";
-    while (1) {
+    while (! $exit_loop) {
         my $command = $self->prompt;
-        if ($command) {
-            if ($command eq 'quit') {
-                $exit_loop = 1;
-            } else {
-                my $ret = $self->$command;
-            }
+        next unless $command;
+        if ($command eq 'quit') {
+            $exit_loop = 1;
+            next;
         }
-        last if $exit_loop;
+
+        my $ret = $self->$command;
     }
     debug "[end] $self->{addr}";
 }
@@ -100,8 +99,12 @@ sub prompt {
     print "memcached\@$self->{addr}> ";
     my $input = <STDIN>;
     chomp $input;
+    return unless $input;
 
-    return $COMMANDS{$input};
+    my $command = $COMMANDS{$input};
+    print "Unknown command - $input\n" unless $command;
+
+    return $command;
 }
 
 sub help {
