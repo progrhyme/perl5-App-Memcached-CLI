@@ -1,7 +1,8 @@
 package App::Memcached::CLI;
-use 5.008001;
+
 use strict;
 use warnings;
+use 5.008_001;
 
 use version; our $VERSION = 'v0.2.2';
 
