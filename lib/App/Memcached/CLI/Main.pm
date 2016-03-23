@@ -16,19 +16,24 @@ use App::Memcached::CLI::Util ':all';
 use version; our $VERSION = 'v0.0.1';
 
 my %COMMANDS = (
-    'help'     => 'help',
-    '\h'       => 'help',
-    'quit'     => 'quit',
-    '\q'       => 'quit',
-    'exit'     => 'quit',
-    'display'  => 'display',
-    '\d'       => 'display',
-    'stats'    => 'stats',
-    '\s'       => 'stats',
-    'settings' => 'settings',
-    'config'   => 'settings',
-    '\c'       => 'settings',
+    'help'      => 'help',
+    '\h'        => 'help',
+    'quit'      => 'quit',
+    '\q'        => 'quit',
+    'exit'      => 'quit',
+    'display'   => 'display',
+    '\d'        => 'display',
+    'stats'     => 'stats',
+    '\s'        => 'stats',
+    'settings'  => 'settings',
+    'config'    => 'settings',
+    '\c'        => 'settings',
+    'cachedump' => 'cachedump',
+    'dump'      => 'cachedump',
+    '\cd'       => 'cachedump',
 );
+
+my $DEFAULT_CACHEDUMP_SIZE = 20;
 
 sub new {
     my $class  = shift;
@@ -78,14 +83,14 @@ sub run {
     };
     print "Type '\\h' or 'help' to show help.\n\n";
     while (! $exit_loop) {
-        my $command = $self->prompt;
+        my ($command, @args) = $self->prompt;
         next unless $command;
         if ($command eq 'quit') {
             $exit_loop = 1;
             next;
         }
 
-        my $ret = $self->$command;
+        my $ret = $self->$command(@args);
     }
     debug "[end] $self->{addr}";
 }
@@ -101,10 +106,11 @@ sub prompt {
     chomp $input;
     return unless $input;
 
-    my $command = $COMMANDS{$input};
+    my ($_command, @args) = split(m/\s+/, $input);
+    my $command = $COMMANDS{$_command};
     print "Unknown command - $input\n" unless $command;
 
-    return $command;
+    return $command, @args;
 }
 
 sub help {
@@ -114,6 +120,7 @@ sub help {
         ['\d, display', 'Display slabs info'],
         ['\s, stats', 'Show stats'],
         ['\c, config, settings', 'Show settings'],
+        ['\cd, cachedump, dump', 'Show cachedump'],
     );
     my $body = "\n[Available Commands]\n";
     for my $cmd (@commands) {
@@ -121,6 +128,20 @@ sub help {
         $body .= sprintf "%s%-20s%s%s\n", $space, $cmd->[0], $space, $cmd->[1];
     }
     print "$body\n";
+}
+
+sub cachedump {
+    my $self  = shift;
+    my $class = shift;
+    my $num   = shift || $DEFAULT_CACHEDUMP_SIZE;
+
+    unless ($class) {
+        print "No slab class specified.\n";
+        return;
+    }
+    my $response = $self->{ds}->query("stats cachedump $class $num");
+    print "$_\n" for @$response;
+    return 1;
 }
 
 sub display {
