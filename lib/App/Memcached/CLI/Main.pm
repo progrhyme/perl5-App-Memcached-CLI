@@ -13,7 +13,7 @@ use App::Memcached::CLI;
 use App::Memcached::CLI::DataSource;
 use App::Memcached::CLI::Util ':all';
 
-use version; our $VERSION = 'v0.0.1';
+use version; our $VERSION = 'v0.1.0';
 
 my %COMMANDS = (
     'help'      => 'help',
