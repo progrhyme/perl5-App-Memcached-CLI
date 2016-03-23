@@ -5,9 +5,11 @@ use warnings;
 use 5.008_001;
 
 use Carp;
+use File::Basename 'basename';
 use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
 use List::Util qw(first);
+use Term::ReadLine;
 
 use App::Memcached::CLI;
 use App::Memcached::CLI::DataSource;
@@ -85,6 +87,8 @@ sub run {
         $exit_loop = 1;
         warn "Caught INT or QUIT. Exiting...";
     };
+
+    $self->{term} = Term::ReadLine->new(basename $0);
     print "Type '\\h' or 'help' to show help.\n\n";
     while (! $exit_loop) {
         my ($command, @args) = $self->prompt;
@@ -108,10 +112,10 @@ sub prompt {
     local $| = 1;
     local $\;
 
-    print "memcached\@$self->{addr}> ";
-    my $input = <STDIN>;
-    chomp $input;
+    my $input = $self->{term}->readline("memcached\@$self->{addr}> ");
+    chomp($input);
     return unless $input;
+    $self->{term}->addhistory($input) if ($input =~ m/\S/);
 
     my ($_command, @args) = split(m/\s+/, $input);
     my $command = $COMMAND_OF{$_command};
