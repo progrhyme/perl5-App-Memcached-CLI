@@ -15,23 +15,19 @@ use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.1.0';
 
-my %COMMANDS = (
-    'help'      => 'help',
-    '\h'        => 'help',
-    'quit'      => 'quit',
-    '\q'        => 'quit',
-    'exit'      => 'quit',
-    'display'   => 'display',
-    '\d'        => 'display',
-    'stats'     => 'stats',
-    '\s'        => 'stats',
-    'settings'  => 'settings',
-    'config'    => 'settings',
-    '\c'        => 'settings',
-    'cachedump' => 'cachedump',
-    'dump'      => 'cachedump',
-    '\cd'       => 'cachedump',
+my %COMMAND2ALIASES = (
+    help      => ['\h'],
+    quit      => [qw(\q exit)],
+    display   => [qw(\d)],
+    stats     => [qw(\s)],
+    settings  => [qw(\c config)],
+    cachedump => [qw(\cd dump)],
 );
+my %COMMAND_OF;
+while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
+    $COMMAND_OF{$cmd} = $cmd;
+    $COMMAND_OF{$_}   = $cmd for @$aliases;
+}
 
 my $DEFAULT_CACHEDUMP_SIZE = 20;
 
@@ -115,25 +111,48 @@ sub prompt {
     return unless $input;
 
     my ($_command, @args) = split(m/\s+/, $input);
-    my $command = $COMMANDS{$_command};
+    my $command = $COMMAND_OF{$_command};
     print "Unknown command - $input\n" unless $command;
 
     return $command, @args;
 }
 
 sub help {
-    my @commands = (
-        ['\h, help', 'Show help (this)'],
-        ['\q, quit, exit', 'Exit'],
-        ['\d, display', 'Display slabs info'],
-        ['\s, stats', 'Show stats'],
-        ['\c, config, settings', 'Show settings'],
-        ['\cd, cachedump, dump', 'Show cachedump'],
+    my $self = shift;
+
+    my @command_info = (
+        +{
+            command => 'help',
+            summary => 'Show help (this)',
+        },
+        +{
+            command => 'quit',
+            summary => 'Exit',
+        },
+        +{
+            command => 'display',
+            summary => 'Display slabs info',
+        },
+        +{
+            command => 'stats',
+            summary => 'Show stats',
+        },
+        +{
+            command => 'settings',
+            summary => 'Show settings',
+        },
+        +{
+            command => 'cachedump',
+            summary => 'Show cachedump',
+        },
     );
     my $body = "\n[Available Commands]\n";
-    for my $cmd (@commands) {
+    for my $info (@command_info) {
+        my $cmd = $info->{command};
         my $space = ' ' x 4;
-        $body .= sprintf "%s%-20s%s%s\n", $space, $cmd->[0], $space, $cmd->[1];
+        my @aliases = @{$COMMAND2ALIASES{$cmd}};
+        my $commands = join(q{, }, shift @aliases, $cmd, @aliases);
+        $body .= sprintf "%s%-20s%s%s\n", $space, $commands, $space, $info->{summary};
     }
     print "$body\n";
 }
