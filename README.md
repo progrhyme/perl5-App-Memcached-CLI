@@ -1,29 +1,35 @@
 [![Build Status](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI.svg?branch=master)](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI)
 # NAME
 
-__memcached-cli__ - Interactive CLI for Memcached
+**memcached-cli** - Interactive CLI for Memcached
 
 # SYNOPSIS
 
 Run an interactive CLI:
 
-    memcached-cli <host[:port] | /path/to/socket> [options]
+```
+memcached-cli <host[:port] | /path/to/socket> [options]
 
-    # Without 1st arg, connects 127.0.0.1:11211 by default
-    memcached-cli [options]
-    # You can provide <addr> by option style
-    memcached-cli --addr|-a <host[:port] | /path/to/socket> [options]
+# Without 1st arg, connects 127.0.0.1:11211 by default
+memcached-cli [options]
+# You can provide <addr> by option style
+memcached-cli --addr|-a <host[:port] | /path/to/socket> [options]
+```
 
 These above turns into interactive mode like below:
 
-    memcached@SERVER:PORT>
-    memcached@SERVER:PORT> \h    # show help
-    memcached@SERVER:PORT> \d    # display slabs info
+```
+memcached@SERVER:PORT>
+memcached@SERVER:PORT> \h    # show help
+memcached@SERVER:PORT> \d    # display slabs info
+```
 
 Show Help/Manual:
 
-    memcached-cli -h|--help
-    memcached-cli --man
+```
+memcached-cli -h|--help
+memcached-cli --man
+```
 
 # DESCRIPTION
 
@@ -34,18 +40,18 @@ command you run.
 
 # OPTIONS
 
-- __-t|--timeout=Int__
+- **-t|--timeout=Int**
 
-    Sets connection timeout. Default is 5 seconds.
+    Sets connection timeout. Default is 1 seconds.
 
-- __-d|--debug__
+- **-d|--debug**
 
     Shows debug logs.
 
 # SEE ALSO
 
 [App::Memcached::CLI](https://metacpan.org/pod/App::Memcached::CLI),
-__memcached(1)__,
+**memcached(1)**,
 [http://www.memcached.org/](http://www.memcached.org/)
 
 # AUTHORS

@@ -1,7 +1,8 @@
-name = "App-Memcached-CLI"
-badges = ["travis"]
-authority="cpan:KEYAMB"
+name      = "App-Memcached-CLI"
+badges    = ["travis"]
+authority = "cpan:KEYAMB"
 
-module_maker="ModuleBuildTiny"
+module_maker = "ModuleBuildTiny"
 
-readme_from="script/memcached-cli"
+readme_from    = "script/memcached-cli"
+markdown_maker = "Pod::Markdown::Github"
