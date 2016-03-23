@@ -5,6 +5,7 @@ use warnings;
 use 5.008_001;
 
 use Carp;
+use Encode::Guess qw(euc-jp shiftjis 7bit-jis);
 use File::Basename 'basename';
 use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
@@ -20,6 +21,7 @@ use version; our $VERSION = 'v0.2.1';
 my %COMMAND2ALIASES = (
     help      => ['\h'],
     quit      => [qw(\q exit)],
+    get       => [],
     display   => [qw(\d)],
     stats     => [qw(\s)],
     settings  => [qw(\c config)],
@@ -32,6 +34,7 @@ while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
 }
 
 my $DEFAULT_CACHEDUMP_SIZE = 20;
+my $SHOW_DATA_LENGTH       = 320;
 
 sub new {
     my $class  = shift;
@@ -138,6 +141,14 @@ sub help {
             summary => 'Exit',
         },
         +{
+            command => 'get',
+            summary => 'Get data of KEY',
+            description => <<'EODESC',
+Usage:
+    > get <KEY>
+EODESC
+        },
+        +{
             command => 'display',
             summary => 'Display slabs info',
         },
@@ -199,7 +210,32 @@ EODESC
 sub _sorted_aliases_of {
     my $command = shift;
     my @aliases = @{$COMMAND2ALIASES{$command}};
-    return (shift @aliases, $command, @aliases);
+    return (shift @aliases, $command, @aliases) if @aliases;
+    return ($command);
+}
+
+sub get {
+    my $self = shift;
+    my $key  = shift;
+    my $data = $self->{ds}->get($key);
+
+    my $value = $data->{value};
+    my $string = Encode::decode('Guess', $data->{value});
+    unless ($string) {
+        debug "Decode Guess failed for key - $key";
+        $value = '(binary)';
+    } elsif ((my $length = length $string) > $SHOW_DATA_LENGTH) {
+        $value = substr($string, 0, $SHOW_DATA_LENGTH - 1);
+        $value .= '...(the rest is skipped)';
+    }
+    $data->{value} = $value;
+
+    my $space = q{ } x 4;
+    for my $key (qw/key value flags length/) {
+        printf "%s%6s:%s%s\n", $space, $key, $space, $data->{$key};
+    }
+
+    return 1;
 }
 
 sub cachedump {
