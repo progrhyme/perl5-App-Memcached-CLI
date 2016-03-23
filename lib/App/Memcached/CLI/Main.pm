@@ -158,6 +158,8 @@ EODESC
     );
     my $body   = q{};
     my $space  = ' ' x 4;
+
+    # Help for specified command
     if (my $function = $COMMAND_OF{$command}) {
         my $aliases = join(q{, }, _sorted_aliases_of($function));
         my $info = (grep { $_->{command} eq $function } @command_info)[0];
@@ -172,9 +174,13 @@ EODESC
         }
         print $body;
         return 1;
-    } elsif ($command) {
+    }
+    # Command not found, but continue
+    elsif ($command) {
         $body .= "Unknown command: $command\n";
     }
+
+    # General help
     $body .= "\n[Available Commands]\n";
     for my $info (@command_info) {
         my $cmd = $info->{command};
