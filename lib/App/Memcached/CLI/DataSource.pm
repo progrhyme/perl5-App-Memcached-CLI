@@ -81,6 +81,21 @@ sub set {
     return 1;
 }
 
+sub delete {
+    my $self = shift;
+    my $key  = shift;
+
+    my $socket = $self->{socket};
+    print $socket "delete $key\r\n";
+    my $response = $self->_readline;
+    if ($response !~ m/^DELETED/) {
+        warn "Failed to delete '$key'";
+        return;
+    }
+    return 1;
+
+}
+
 sub query {
     my $self  = shift;
     my $query = shift;
