@@ -4,8 +4,6 @@ use strict;
 use warnings;
 use 5.008_001;
 
-use Encode::Guess qw(euc-jp shiftjis 7bit-jis);
-
 use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.2.2';
@@ -59,12 +57,10 @@ sub disp_value {
 sub value_text {
     my $self = shift;
     $self->{value_text} ||= sub {
-        my $string = Encode::decode('Guess', $self->{value});
-        unless ($string) {
-            debug "Decode Guess failed for key - $self->{key}";
-            $string = '(binary)';
+        if ($self->{value} !~ m/^[\x20-\x7e]/) {
+            return '(Not ASCII)';
         }
-        return $string;
+        return $self->{value};
     }->();
     return $self->{value_text};
 }
