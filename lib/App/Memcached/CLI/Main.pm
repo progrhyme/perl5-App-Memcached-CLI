@@ -22,6 +22,7 @@ my $PROGRAM = basename $0;
 
 my %COMMAND2ALIASES = (
     help       => ['\h'],
+    version    => ['\v'],
     quit       => [qw(\q exit)],
     display    => [qw(\d)],
     stats      => [qw(\s)],
@@ -167,6 +168,10 @@ sub help {
         +{
             command => 'help',
             summary => 'Show help (this)',
+        },
+        +{
+            command => 'version',
+            summary => 'Show server version',
         },
         +{
             command => 'quit',
@@ -338,6 +343,13 @@ sub delete {
         return;
     }
     print "OK\n";
+    return 1;
+}
+
+sub version {
+    my $self = shift;
+    my $version = $self->{ds}->version;
+    print "$version\n";
     return 1;
 }
 
