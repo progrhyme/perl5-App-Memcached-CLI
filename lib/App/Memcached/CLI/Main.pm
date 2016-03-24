@@ -201,7 +201,8 @@ sub help {
     for my $info (@command_info) {
         my $cmd = $info->{command};
         my $commands = join(q{, }, _sorted_aliases_of($cmd));
-        $body .= sprintf "%-24s%s%s\n", $commands, $space, $info->{summary};
+        $body .= sprintf "%s%-20s%s%s\n",
+            $space, $commands, $space x 2, $info->{summary};
     }
     $body .= "\nType \\h <command> for each.\n\n";
     print $body;
