@@ -2,6 +2,10 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.4.0 2016-03-24T05:35:52Z
+
+    - Feature: support batch mode with commandline arguments
+
 v0.3.0 2016-03-24T03:40:05Z
 
     - Feature: implement "detaildump" command for "stats detail dump"

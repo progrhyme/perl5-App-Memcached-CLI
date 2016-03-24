@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI.svg?branch=master)](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI)
 # NAME
 
-**memcached-cli** - Interactive CLI for Memcached
+**memcached-cli** - Interactive/Batch CLI for Memcached
 
 # SYNOPSIS
 
@@ -24,19 +24,32 @@ memcached@SERVER:PORT> \h    # show help
 memcached@SERVER:PORT> \d    # display slabs info
 ```
 
+Run as batch script:
+
+```
+memcached-cli [options] <command> [<args>]
+```
+
 Show Help/Manual:
 
 ```
+# For general usage
 memcached-cli -h|--help
 memcached-cli --man
+
+# For available commands
+memcached-cli help
+memcached-cli help <command>
 ```
 
 # DESCRIPTION
 
-This script provides interactive CLI for Memcached.
+This script runs an interactive CLI or batch utility for Memcached.
 
-It connects to a specified Memcached server and interactively executes each
-command you run.
+In interactive mode, it connects to a specified Memcached server and
+interactively executes each command you run.
+
+In batch mode, you can execute any command which you can do in interactive mode.
 
 # OPTIONS
 
