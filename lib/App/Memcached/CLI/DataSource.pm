@@ -106,6 +106,31 @@ sub _store {
     return 1;
 }
 
+sub cas {
+    my $self   = shift;
+    my $key    = shift;
+    my $value  = shift;
+    my $cas    = shift;
+    my %option = @_;
+
+    my $flags  = $option{flags}  || 0;
+    my $expire = $option{expire} || 0;
+    my $bytes  = sub {
+        use bytes;
+        return length $value;
+    }->();
+
+    my $socket = $self->{socket};
+    print $socket "cas $key $flags $expire $bytes $cas\r\n";
+    print $socket "$value\r\n";
+    my $response = $self->_readline;
+    if ($response !~ m/^STORED/) {
+        debug qq{Failed to set data as ($key, $value) with cas $cas};
+        return;
+    }
+    return 1;
+}
+
 sub delete {
     my $self = shift;
     my $key  = shift;
