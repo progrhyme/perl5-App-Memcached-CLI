@@ -6,7 +6,7 @@ use 5.008_001;
 
 use App::Memcached::CLI::Util ':all';
 
-use version; our $VERSION = 'v0.6.0';
+use version; our $VERSION = 'v0.6.1';
 
 my $DISPLAY_DATA_LENGTH = 320;
 
