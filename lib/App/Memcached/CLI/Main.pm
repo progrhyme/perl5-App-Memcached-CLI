@@ -33,6 +33,10 @@ my %COMMAND2ALIASES = (
     detail     => [],
     get        => [],
     set        => [],
+    add        => [],
+    replace    => [],
+    append     => [],
+    prepend    => [],
     delete     => [],
     flush_all  => [qw(flush)],
 );
@@ -227,8 +231,15 @@ sub get {
     return 1;
 }
 
-sub set {
-    my $self = shift;
+sub set     { return &_store(shift, 'set', @_); }
+sub add     { return &_store(shift, 'add', @_); }
+sub replace { return &_store(shift, 'replace', @_); }
+sub append  { return &_store(shift, 'append',  @_); }
+sub prepend { return &_store(shift, 'prepend', @_); }
+
+sub _store {
+    my $self    = shift;
+    my $command = shift;
     my ($key, $value, $expire, $flags) = @_;
     unless ($key and $value) {
         print "KEY or VALUE not specified.\n";
@@ -240,9 +251,9 @@ sub set {
         expire => $expire,
         flags  => $flags,
     );
-    unless ($item->save($self->{ds})) {
-        warn "Failed to store item. KEY $key, VALUE $value";
-        return;
+    unless ($item->save($self->{ds}, command => $command)) {
+        print "Failed to $command item. KEY $key, VALUE $value\n";
+        return 1;
     }
     print "OK\n";
     return 1;
