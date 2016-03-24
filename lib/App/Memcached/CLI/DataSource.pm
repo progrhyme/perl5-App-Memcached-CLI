@@ -65,8 +65,8 @@ sub query {
 
     my @response;
     while (<$socket>) {
-        last if m/^END/;
-        confess $_ if m/^SERVER_ERROR/;
+        last if m/^(OK|END)/;
+        confess $_ if m/^(CLIENT|SERVER_)?ERROR/;
         $_ =~ s/[\r\n]+$//;
         push @response, $_;
     }
