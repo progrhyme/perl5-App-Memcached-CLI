@@ -33,6 +33,7 @@ my %COMMAND2ALIASES = (
     get        => [],
     set        => [],
     delete     => [],
+    flush_all  => [qw(flush)],
 );
 my %COMMAND_OF;
 while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
@@ -247,6 +248,16 @@ EODESC
             description => <<'EODESC',
 Usage:
     > delete <KEY>
+EODESC
+        },
+        +{
+            command => 'flush_all',
+            summary => 'Invalidate whole data',
+            description => <<'EODESC',
+Usage:
+    > flush_all [<DELAY>]
+    > flush_all           # Invalidate immediately
+    > flush_all 60        # Invalidate after 60 seconds
 EODESC
         },
     );
@@ -464,6 +475,16 @@ sub detail {
         off => 'Disabled',
     );
     print "$result{$mode} stats collection for detail dump.\n";
+    return 1;
+}
+
+sub flush_all {
+    my $self  = shift;
+    my $delay = shift;
+    my $query = 'flush_all';
+    if ($delay) { $query .= " $delay"; }
+    my $response = $self->{ds}->query($query);
+    print "OK\n";
     return 1;
 }
 
