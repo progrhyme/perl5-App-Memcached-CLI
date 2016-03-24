@@ -20,8 +20,8 @@ App::Memcached::CLI - Interactive/Batch CLI for Memcached
 =head1 SYNOPSIS
 
     use App::Memcached::CLI::Main;
-    my $params = App::Memcached::CLI->parse_args;
-    App::Memcached::CLI->new(%$params)->run;
+    my $params = App::Memcached::CLI::Main->parse_args;
+    App::Memcached::CLI::Main->new(%$params)->run;
 
 =head1 DESCRIPTION
 
