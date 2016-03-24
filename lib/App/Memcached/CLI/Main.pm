@@ -18,6 +18,8 @@ use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.3.0';
 
+my $PROGRAM = basename $0;
+
 my %COMMAND2ALIASES = (
     help       => ['\h'],
     quit       => [qw(\q exit)],
@@ -67,7 +69,6 @@ sub parse_args {
         \my %opts, 'addr|a=s', 'timeout|t=i',
         'debug|d', 'help|h', 'man',
     ) or return +{};
-    warn "Unevaluated args remain: @ARGV" if (@ARGV);
 
     if (defined $opts{debug}) {
         $App::Memcached::CLI::DEBUG = 1;
@@ -81,7 +82,35 @@ sub parse_args {
 
 sub run {
     my $self = shift;
-    debug "[start] $self->{addr}";
+    if (@ARGV) {
+        $self->run_batch;
+    } else {
+        $self->run_interactive;
+    }
+}
+
+sub run_batch {
+    my $self = shift;
+    debug "Run batch mode with @ARGV" if (@ARGV);
+    my ($_command, @args) = @ARGV;
+    my $command = $COMMAND_OF{$_command};
+    unless ($command) {
+        print "Unknown command - $_command\n";
+        return;
+    } elsif ($command eq 'quit') {
+        print "Nothing to do with $_command\n";
+        return;
+    }
+
+    my $ret = $self->$command(@args);
+    unless ($ret) {
+        print qq[Command seems failed. Run \`$PROGRAM help\` or \`$PROGRAM help $command\` for usage.\n];
+    }
+}
+
+sub run_interactive {
+    my $self = shift;
+    debug "Start interactive mode. $self->{addr}";
     my $isa_tty = -t STDIN && (-t STDOUT || !(-f STDOUT || -c STDOUT));
     unless ($isa_tty) {
         croak "TTY Not Found! Quit.";
@@ -92,7 +121,7 @@ sub run {
         warn "Caught INT or QUIT. Exiting...";
     };
 
-    $self->{term} = Term::ReadLine->new(basename $0);
+    $self->{term} = Term::ReadLine->new($PROGRAM);
     print "Type '\\h' or 'help' to show help.\n\n";
     while (! $exit_loop) {
         my ($command, @args) = $self->prompt;
@@ -107,7 +136,7 @@ sub run {
             print "Command seems failed. Type \\h $command for help.\n\n";
         }
     }
-    debug "[end] $self->{addr}";
+    debug "Finish interactive mode. $self->{addr}";
 }
 
 sub prompt {
