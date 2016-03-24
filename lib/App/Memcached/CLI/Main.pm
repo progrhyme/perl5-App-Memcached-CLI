@@ -195,9 +195,9 @@ sub help {
             summary => 'Show cachedump of specified slab',
             description => <<'EODESC',
 Usage:
-    > cachedump <CLASS> <NUMBER>
+    > cachedump <CLASS> [<NUMBER>]
     > cachedump 1 10
-    > cachedump 3     # default <NUMBER>
+    > cachedump 3     # show default number of items
 EODESC
         },
         +{
@@ -225,7 +225,7 @@ EODESC
         },
         +{
             command => 'get',
-            summary => 'Get data of KEY',
+            summary => 'Get data by KEY',
             description => <<'EODESC',
 Usage:
     > get <KEY>
@@ -233,7 +233,7 @@ EODESC
         },
         +{
             command => 'set',
-            summary => 'Set data with KEY, VALUE',
+            summary => 'Set data by KEY VALUE',
             description => <<'EODESC',
 Usage:
     > set <KEY> <VALUE> [<EXPIRE> [<FLAGS>]]
@@ -244,7 +244,7 @@ EODESC
         },
         +{
             command => 'delete',
-            summary => 'Delete data of KEY',
+            summary => 'Delete data by KEY',
             description => <<'EODESC',
 Usage:
     > delete <KEY>
