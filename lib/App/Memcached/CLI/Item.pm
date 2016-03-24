@@ -43,6 +43,13 @@ sub save {
     return $ret;
 }
 
+sub remove {
+    my $self = shift;
+    my $ds   = shift;
+    my $ret  = $ds->delete($self->{key});
+    return $ret;
+}
+
 sub output {
     my $self = shift;
     my $space = q{ } x 4;
