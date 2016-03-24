@@ -85,6 +85,14 @@ Usage:
 EODESC
     },
     +{
+        command => 'gets',
+        summary => 'Get data by KEY with cas',
+        description => <<'EODESC',
+Usage:
+    > gets <KEY>
+EODESC
+    },
+    +{
         command => 'set',
         summary => 'Set data by KEY VALUE',
         description => <<'EODESC',

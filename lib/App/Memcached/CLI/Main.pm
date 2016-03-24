@@ -32,6 +32,7 @@ my %COMMAND2ALIASES = (
     detaildump => [qw(\dd)],
     detail     => [],
     get        => [],
+    gets       => [],
     set        => [],
     add        => [],
     replace    => [],
@@ -218,12 +219,24 @@ sub _sorted_aliases_of {
 
 sub get {
     my $self = shift;
-    my $key  = shift;
+    return $self->_retrieve('get', shift);
+}
+
+sub gets {
+    my $self = shift;
+    return $self->_retrieve('gets', shift);
+}
+
+sub _retrieve {
+    my $self = shift;
+    my ($command, $key) = @_;
     unless ($key) {
         print "No KEY specified.\n";
         return;
     }
-    my $item = App::Memcached::CLI::Item->find_by_get($key, $self->{ds});
+    my $item = App::Memcached::CLI::Item->find(
+        $key, $self->{ds}, command => $command,
+    );
     unless ($item) {
         print "Not found - $key\n";
     } else {

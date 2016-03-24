@@ -16,12 +16,14 @@ sub new {
     bless \%data, $class;
 }
 
-sub find_by_get {
+sub find {
     my $class = shift;
     my $key   = shift;
     my $ds    = shift;
+    my %opt   = @_;
 
-    my $data = $ds->get($key);
+    my $command = $opt{command} || 'get';
+    my $data    = $ds->$command($key);
     return unless $data->{value};
 
     bless $data, $class;
@@ -57,11 +59,12 @@ sub output {
     my $self = shift;
     my $space = q{ } x 4;
     my %method = (value => 'disp_value');
-    for my $key (qw/key value flags length/) {
+    for my $key (qw/key value flags length cas/) {
         my $value = $self->{$key};
         if (my $_method = $method{$key}) {
             $value = $self->$_method;
         }
+        next unless defined $value;
         printf "%s%6s:%s%s\n", $space, $key, $space, $value;
     }
 }
