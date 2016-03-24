@@ -96,6 +96,17 @@ sub delete {
 
 }
 
+sub version {
+    my $self  = shift;
+    my $query = shift;
+
+    my $socket = $self->{socket};
+    print $socket "version\r\n";
+    my $response = $self->_readline;
+    chomp $response;
+    return $response;
+}
+
 sub query {
     my $self  = shift;
     my $query = shift;
