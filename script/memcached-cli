@@ -6,7 +6,7 @@ use 5.008_001;
 
 use Pod::Usage;
 
-use version; our $VERSION = 'v0.2.3';
+use version; our $VERSION = 'v0.3.0';
 
 use App::Memcached::CLI::Main;
 

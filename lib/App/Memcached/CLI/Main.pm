@@ -16,7 +16,7 @@ use App::Memcached::CLI::DataSource;
 use App::Memcached::CLI::Item;
 use App::Memcached::CLI::Util ':all';
 
-use version; our $VERSION = 'v0.2.3';
+use version; our $VERSION = 'v0.3.0';
 
 my %COMMAND2ALIASES = (
     help       => ['\h'],

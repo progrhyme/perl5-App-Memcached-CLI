@@ -2,6 +2,11 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.3.0 2016-03-24T03:40:05Z
+
+    - Feature: implement "detaildump" command for "stats detail dump"
+    - Feature: implement "detail" command to toggle stats collection
+
 v0.2.3 2016-03-24T01:26:45Z
 
     - Change: remove Encode::Guess from dependency. Decode ASCII text only when
