@@ -30,6 +30,7 @@ my %COMMAND2ALIASES = (
     detaildump => [qw(\dd)],
     detail     => [],
     get        => [],
+    set        => [],
 );
 my %COMMAND_OF;
 while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
@@ -223,6 +224,17 @@ Usage:
     > get <KEY>
 EODESC
         },
+        +{
+            command => 'set',
+            summary => 'Set data with KEY, VALUE',
+            description => <<'EODESC',
+Usage:
+    > set <KEY> <VALUE> [<EXPIRE> [<FLAGS>]]
+    > set mykey1 MyValue1
+    > set mykey2 MyValue2 0     # Never expires. Default
+    > set mykey3 MyValue3 120 1
+EODESC
+        },
     );
     my $body   = q{};
     my $space  = ' ' x 4;
@@ -280,6 +292,27 @@ sub get {
     } else {
         print $item->output;
     }
+    return 1;
+}
+
+sub set {
+    my $self = shift;
+    my ($key, $value, $expire, $flags) = @_;
+    unless ($key and $value) {
+        print "KEY or VALUE not specified.\n";
+        return;
+    }
+    my $item = App::Memcached::CLI::Item->new(
+        key    => $key,
+        value  => $value,
+        expire => $expire,
+        flags  => $flags,
+    );
+    unless ($item->save($self->{ds})) {
+        warn "Failed to store item. KEY $key, VALUE $value";
+        return;
+    }
+    print "OK\n";
     return 1;
 }
 
