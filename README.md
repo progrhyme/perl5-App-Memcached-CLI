@@ -104,7 +104,26 @@ A couple of features of following commands derives from
 
 - **set** _KEY_ _VALUE_ \[_EXPIRE_ \[_FLAGS_\]\]
 
-    Stores data into memcached by specified _KEY_, _VALUE_ and optional _EXPIRE_ and _FLAGS_.
+    Stores data into memcached by specified _KEY_, _VALUE_ and optional _EXPIRE_
+    and _FLAGS_.
+
+- **add** _KEY_ _VALUE_ \[_EXPIRE_ \[_FLAGS_\]\]
+
+    Stores data into memcached by specified _KEY_, _VALUE_ and optional _EXPIRE_
+    and _FLAGS_ only when there is NO data with the same _KEY_ in the server.
+
+- **replace** _KEY_ _VALUE_ \[_EXPIRE_ \[_FLAGS_\]\]
+
+    Stores data into memcached by specified _KEY_, _VALUE_ and optional _EXPIRE_
+    and _FLAGS_ only when there IS data with the same _KEY_ in the server.
+
+- **append** _KEY_ _VALUE_
+
+    Appends _VALUE_ after existing data in memcached which has specified _KEY_.
+
+- **prepend** _KEY_ _VALUE_
+
+    Puts _VALUE_ before existing data in memcached which has specified _KEY_.
 
 - **delete** _KEY_
 

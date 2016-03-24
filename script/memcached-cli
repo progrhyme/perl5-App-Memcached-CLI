@@ -128,7 +128,26 @@ Gets one item in memcached by specified I<KEY> and shows its data.
 
 =item B<set> I<KEY> I<VALUE> [I<EXPIRE> [I<FLAGS>]]
 
-Stores data into memcached by specified I<KEY>, I<VALUE> and optional I<EXPIRE> and I<FLAGS>.
+Stores data into memcached by specified I<KEY>, I<VALUE> and optional I<EXPIRE>
+and I<FLAGS>.
+
+=item B<add> I<KEY> I<VALUE> [I<EXPIRE> [I<FLAGS>]]
+
+Stores data into memcached by specified I<KEY>, I<VALUE> and optional I<EXPIRE>
+and I<FLAGS> only when there is NO data with the same I<KEY> in the server.
+
+=item B<replace> I<KEY> I<VALUE> [I<EXPIRE> [I<FLAGS>]]
+
+Stores data into memcached by specified I<KEY>, I<VALUE> and optional I<EXPIRE>
+and I<FLAGS> only when there IS data with the same I<KEY> in the server.
+
+=item B<append> I<KEY> I<VALUE>
+
+Appends I<VALUE> after existing data in memcached which has specified I<KEY>.
+
+=item B<prepend> I<KEY> I<VALUE>
+
+Puts I<VALUE> before existing data in memcached which has specified I<KEY>.
 
 =item B<delete> I<KEY>
 
