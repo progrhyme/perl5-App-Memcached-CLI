@@ -149,6 +149,11 @@ Appends I<VALUE> after existing data in memcached which has specified I<KEY>.
 
 Puts I<VALUE> before existing data in memcached which has specified I<KEY>.
 
+=item B<cas> I<KEY> I<VALUE> I<CAS> [I<EXPIRE> [I<FLAGS>]]
+
+Stores data into memcached by specified I<KEY>, I<VALUE> and optional I<EXPIRE>
+and I<FLAGS> only when I<CAS> of data is not changed from specified I<CAS> value.
+
 =item B<delete> I<KEY>
 
 Deletes one item in memcached by specified I<KEY>.

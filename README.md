@@ -125,6 +125,11 @@ A couple of features of following commands derives from
 
     Puts _VALUE_ before existing data in memcached which has specified _KEY_.
 
+- **cas** _KEY_ _VALUE_ _CAS_ \[_EXPIRE_ \[_FLAGS_\]\]
+
+    Stores data into memcached by specified _KEY_, _VALUE_ and optional _EXPIRE_
+    and _FLAGS_ only when _CAS_ of data is not changed from specified _CAS_ value.
+
 - **delete** _KEY_
 
     Deletes one item in memcached by specified _KEY_.
