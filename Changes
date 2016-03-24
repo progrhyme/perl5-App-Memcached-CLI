@@ -2,6 +2,11 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.2.3 2016-03-24T01:26:45Z
+
+    - Change: remove Encode::Guess from dependency. Decode ASCII text only when
+      GET item.
+
 v0.2.2 2016-03-23T13:22:39Z
 
     - Feature: implement "get" command in interactive mode to GET data of
