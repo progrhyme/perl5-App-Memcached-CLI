@@ -57,7 +57,7 @@ sub disp_value {
 sub value_text {
     my $self = shift;
     $self->{value_text} ||= sub {
-        if ($self->{value} !~ m/^[\x20-\x7e]/) {
+        if ($self->{value} !~ m/^[\x21-\x7e\s]/) {
             return '(Not ASCII)';
         }
         return $self->{value};
