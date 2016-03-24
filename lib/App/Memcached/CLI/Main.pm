@@ -216,7 +216,7 @@ sub _sorted_aliases_of {
 sub get {
     my $self = shift;
     my $key  = shift;
-    my $item = App::Memcached::CLI::Item->get($key, $self->{ds});
+    my $item = App::Memcached::CLI::Item->find_by_get($key, $self->{ds});
     return unless $item;
 
     print $item->output;

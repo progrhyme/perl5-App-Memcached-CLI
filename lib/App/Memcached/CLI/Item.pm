@@ -16,7 +16,7 @@ sub new {
     bless \%data, $class;
 }
 
-sub get {
+sub find_by_get {
     my $class = shift;
     my $key   = shift;
     my $ds    = shift;
