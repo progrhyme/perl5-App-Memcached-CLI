@@ -58,6 +58,29 @@ sub get {
     return \%data;
 }
 
+sub set {
+    my $self   = shift;
+    my $key    = shift;
+    my $value  = shift;
+    my %option = @_;
+    my $flags  = $option{flags}  || 0;
+    my $expire = $option{expire} || 0;
+    my $bytes  = sub {
+        use bytes;
+        return length $value;
+    }->();
+
+    my $socket = $self->{socket};
+    print $socket "set $key $flags $expire $bytes\r\n";
+    print $socket "$value\r\n";
+    my $response = $self->_readline;
+    if ($response !~ m/^STORED/) {
+        warn "Failed to set '$key' with '$value'";
+        return;
+    }
+    return 1;
+}
+
 sub query {
     my $self  = shift;
     my $query = shift;
