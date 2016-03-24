@@ -35,16 +35,27 @@ sub connect {
 
 sub get {
     my $self = shift;
-    my $key  = shift;
+    return $self->_retrieve('get', shift);
+}
+
+sub gets {
+    my $self = shift;
+    return $self->_retrieve('gets', shift);
+}
+
+sub _retrieve {
+    my $self = shift;
+    my ($cmd, $key) = @_;
 
     my $socket = $self->{socket};
-    print $socket "get $key\r\n";
+    print $socket "$cmd $key\r\n";
 
     my %data = (key => $key);
     my $response = <$socket>;
-    if ($response =~ m/^VALUE \S+ (\d+) (\d+)/) {
+    if ($response =~ m/^VALUE \S+ (\d+) (\d+)(?: (\d+))?/) {
         $data{flags}  = $1;
         $data{length} = $2;
+        $data{cas}    = $3;
         read $socket, $response, $data{length};
         $data{value} = $response;
 
