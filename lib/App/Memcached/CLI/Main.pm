@@ -220,28 +220,32 @@ sub _sorted_aliases_of {
 
 sub get {
     my $self = shift;
-    return $self->_retrieve('get', shift);
+    return $self->_retrieve('get', @_);
 }
 
 sub gets {
     my $self = shift;
-    return $self->_retrieve('gets', shift);
+    return $self->_retrieve('gets', @_);
 }
 
 sub _retrieve {
     my $self = shift;
-    my ($command, $key) = @_;
-    unless ($key) {
+    my ($command, @keys) = @_;
+    unless (@keys) {
         print "No KEY specified.\n";
         return;
     }
-    my $item = App::Memcached::CLI::Item->find(
-        $key, $self->{ds}, command => $command,
+    my $items = App::Memcached::CLI::Item->find(
+        \@keys, $self->{ds}, command => $command,
     );
-    unless ($item) {
-        print "Not found - $key\n";
-    } else {
+    unless (@$items) {
+        print "Not found - @keys\n";
+        return 1;
+    }
+    for (my $i=0; $i < scalar(@$items); $i++) {
+        my $item = $items->[$i];
         print $item->output;
+        printf "%s\n", '-' x 24 if ($i < scalar(@$items) - 1);
     }
     return 1;
 }

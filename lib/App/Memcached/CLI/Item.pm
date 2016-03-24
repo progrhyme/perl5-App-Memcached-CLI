@@ -18,15 +18,18 @@ sub new {
 
 sub find {
     my $class = shift;
-    my $key   = shift;
+    my $keys  = shift;
     my $ds    = shift;
     my %opt   = @_;
 
     my $command = $opt{command} || 'get';
-    my $data    = $ds->$command($key);
-    return unless $data->{value};
+    my $list    = $ds->$command($keys);
+    my @items;
+    for my $data (@$list) {
+        push(@items, bless($data, $class));
+    }
 
-    bless $data, $class;
+    return \@items;
 }
 
 sub save {

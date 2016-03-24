@@ -45,28 +45,35 @@ sub gets {
 
 sub _retrieve {
     my $self = shift;
-    my ($cmd, $key) = @_;
+    my ($cmd, $keys) = @_;
 
     my $socket = $self->{socket};
-    print $socket "$cmd $key\r\n";
+    my $key_str = join(q{ }, @$keys);
+    print $socket "$cmd $key_str\r\n";
 
-    my %data = (key => $key);
-    my $response = <$socket>;
-    if ($response =~ m/^VALUE \S+ (\d+) (\d+)(?: (\d+))?/) {
-        $data{flags}  = $1;
-        $data{length} = $2;
-        $data{cas}    = $3;
-        read $socket, $response, $data{length};
-        $data{value} = $response;
+    my @results;
 
-        while ($response !~ m/^END/) { $response = $self->_readline; }
-    } elsif ($response =~ m/^END/) {
-        # not found
-    } else {
-        warn "Unknown response for KEY '$key'. '$response'";
+    while (1) {
+        my $response = <$socket>;
+        next if ($response =~ m/^[\r\n]+$/);
+        if ($response =~ m/^VALUE (\S+) (\d+) (\d+)(?: (\d+))?/) {
+            my %data = (
+                key    => $1,
+                flags  => $2,
+                length => $3,
+                cas    => $4,
+            );
+            read $socket, $response, $data{length};
+            $data{value} = $response;
+            push @results, \%data;
+        } elsif ($response =~ m/^END/) {
+            last;
+        } else {
+            warn "Unknown response '$response'";
+        }
     }
 
-    return \%data;
+    return \@results;
 }
 
 sub set     { return &_store(shift, 'set', @_); }
