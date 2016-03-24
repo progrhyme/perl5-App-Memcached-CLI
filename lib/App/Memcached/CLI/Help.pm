@@ -156,6 +156,20 @@ Usage:
 EODESC
     },
     +{
+        command => 'cas',
+        summary => 'Set data by KEY VALUE with CAS',
+        description => <<'EODESC',
+Description:
+    Store data as specified (KEY, VALUE) if CAS of data is not modified.
+
+Usage:
+    > cas <KEY> <VALUE> <CAS> [<EXPIRE> [<FLAGS>]]
+    > cas mykey1 MyValue1 1
+    > cas mykey2 MyValue2 26  0     # Never expires. Default
+    > cas mykey3 MyValue3 355 120 1
+EODESC
+    },
+    +{
         command => 'delete',
         summary => 'Delete data by KEY',
         description => <<'EODESC',

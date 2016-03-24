@@ -38,6 +38,7 @@ my %COMMAND2ALIASES = (
     replace    => [],
     append     => [],
     prepend    => [],
+    cas        => [],
     delete     => [],
     flush_all  => [qw(flush)],
 );
@@ -267,6 +268,28 @@ sub _store {
     );
     unless ($item->save($self->{ds}, command => $command)) {
         print "Failed to $command item. KEY $key, VALUE $value\n";
+        return 1;
+    }
+    print "OK\n";
+    return 1;
+}
+
+sub cas {
+    my $self = shift;
+    my ($key, $value, $cas, $expire, $flags) = @_;
+    unless ($key and $value and $cas) {
+        print "KEY or VALUE or CAS not specified.\n";
+        return;
+    }
+    my $item = App::Memcached::CLI::Item->new(
+        key    => $key,
+        value  => $value,
+        expire => $expire,
+        flags  => $flags,
+        cas    => $cas,
+    );
+    unless ($item->save($self->{ds}, command => 'cas')) {
+        print "Failed to cas item. KEY $key, VALUE $value\n";
         return 1;
     }
     print "OK\n";
