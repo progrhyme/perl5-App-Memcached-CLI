@@ -59,10 +59,18 @@ sub get {
 }
 
 sub set {
+    my $self = shift;
+    return $self->_store('set', @_);
+
+}
+
+sub _store {
     my $self   = shift;
+    my $cmd    = shift;
     my $key    = shift;
     my $value  = shift;
     my %option = @_;
+
     my $flags  = $option{flags}  || 0;
     my $expire = $option{expire} || 0;
     my $bytes  = sub {
@@ -71,11 +79,11 @@ sub set {
     }->();
 
     my $socket = $self->{socket};
-    print $socket "set $key $flags $expire $bytes\r\n";
+    print $socket "$cmd $key $flags $expire $bytes\r\n";
     print $socket "$value\r\n";
     my $response = $self->_readline;
     if ($response !~ m/^STORED/) {
-        warn "Failed to set '$key' with '$value'";
+        warn qq{Failed to $cmd as ($key, $value)};
         return;
     }
     return 1;
