@@ -83,7 +83,7 @@ sub _store {
     print $socket "$value\r\n";
     my $response = $self->_readline;
     if ($response !~ m/^STORED/) {
-        warn qq{Failed to $cmd as ($key, $value)};
+        debug qq{Failed to $cmd data as ($key, $value)};
         return;
     }
     return 1;
