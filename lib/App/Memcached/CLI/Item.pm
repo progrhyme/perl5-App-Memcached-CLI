@@ -27,6 +27,22 @@ sub find_by_get {
     bless $data, $class;
 }
 
+sub save {
+    my $self = shift;
+    my $ds   = shift;
+    my %opt  = @_;
+
+    for my $key (qw/flags expire value/) {
+        if ($opt{$key}) { $self->{$key} = $opt{$key}; }
+    }
+    my %option = (
+        flags  => $self->{flags},
+        expire => $self->{expire},
+    );
+    my $ret = $ds->set($self->{key}, $self->{value}, %option);
+    return $ret;
+}
+
 sub output {
     my $self = shift;
     my $space = q{ } x 4;
