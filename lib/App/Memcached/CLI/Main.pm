@@ -270,6 +270,10 @@ sub _sorted_aliases_of {
 sub get {
     my $self = shift;
     my $key  = shift;
+    unless ($key) {
+        print "No KEY specified.\n";
+        return;
+    }
     my $item = App::Memcached::CLI::Item->find_by_get($key, $self->{ds});
     unless ($item) {
         print "Not found - $key\n";
