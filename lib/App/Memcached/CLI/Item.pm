@@ -43,9 +43,11 @@ sub save {
     );
 
     my $command = $opt{command} || 'set';
-    my $ret = $ds->$command($self->{key}, $self->{value}, %option);
-
-    return $ret;
+    if ($command eq 'cas') {
+        return $ds->$command(@$self{qw/key value cas/}, %option);
+    } else {
+        return $ds->$command(@$self{qw/key value/}, %option);
+    }
 }
 
 sub remove {
