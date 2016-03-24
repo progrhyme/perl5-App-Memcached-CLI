@@ -122,9 +122,14 @@ Enables or disables stats collection for C<stats detail dump> reporting.
 
 I<MODE> should be either "on" or "off" to enable or to disable.
 
-=item B<get> I<KEY>
+=item B<get> I<KEY1> [I<KEY2> ...]
 
-Gets one item in memcached by specified I<KEY> and shows its data.
+Gets items in memcached by specified I<KEY>s and shows their data.
+
+=item B<gets> I<KEY1> [I<KEY2> ...]
+
+Gets items with I<CAS> data in memcached by specified I<KEY>s and shows their
+data.
 
 =item B<set> I<KEY> I<VALUE> [I<EXPIRE> [I<FLAGS>]]
 

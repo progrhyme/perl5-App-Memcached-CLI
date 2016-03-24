@@ -98,9 +98,14 @@ A couple of features of following commands derives from
 
     _MODE_ should be either "on" or "off" to enable or to disable.
 
-- **get** _KEY_
+- **get** _KEY1_ \[_KEY2_ ...\]
 
-    Gets one item in memcached by specified _KEY_ and shows its data.
+    Gets items in memcached by specified _KEY_s and shows their data.
+
+- **gets** _KEY1_ \[_KEY2_ ...\]
+
+    Gets items with _CAS_ data in memcached by specified _KEY_s and shows their
+    data.
 
 - **set** _KEY_ _VALUE_ \[_EXPIRE_ \[_FLAGS_\]\]
 

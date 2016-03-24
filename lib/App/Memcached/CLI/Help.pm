@@ -78,18 +78,18 @@ EODESC
     },
     +{
         command => 'get',
-        summary => 'Get data by KEY',
+        summary => 'Get data by KEYs',
         description => <<'EODESC',
 Usage:
-    > get <KEY>
+    > get <KEY1> [<KEY2> ...]
 EODESC
     },
     +{
         command => 'gets',
-        summary => 'Get data by KEY with cas',
+        summary => 'Get data by KEYs with cas',
         description => <<'EODESC',
 Usage:
-    > gets <KEY>
+    > gets <KEY1> [<KEY2> ...]
 EODESC
     },
     +{
