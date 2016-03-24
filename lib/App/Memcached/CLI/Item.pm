@@ -39,7 +39,10 @@ sub save {
         flags  => $self->{flags},
         expire => $self->{expire},
     );
-    my $ret = $ds->set($self->{key}, $self->{value}, %option);
+
+    my $command = $opt{command} || 'set';
+    my $ret = $ds->$command($self->{key}, $self->{value}, %option);
+
     return $ret;
 }
 
