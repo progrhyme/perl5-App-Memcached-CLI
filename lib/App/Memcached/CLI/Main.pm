@@ -31,6 +31,7 @@ my %COMMAND2ALIASES = (
     detail     => [],
     get        => [],
     set        => [],
+    delete     => [],
 );
 my %COMMAND_OF;
 while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
@@ -235,6 +236,14 @@ Usage:
     > set mykey3 MyValue3 120 1
 EODESC
         },
+        +{
+            command => 'delete',
+            summary => 'Delete data of KEY',
+            description => <<'EODESC',
+Usage:
+    > delete <KEY>
+EODESC
+        },
     );
     my $body   = q{};
     my $space  = ' ' x 4;
@@ -310,6 +319,22 @@ sub set {
     );
     unless ($item->save($self->{ds})) {
         warn "Failed to store item. KEY $key, VALUE $value";
+        return;
+    }
+    print "OK\n";
+    return 1;
+}
+
+sub delete {
+    my $self = shift;
+    my $key  = shift;
+    unless ($key) {
+        print "No KEY specified.\n";
+        return;
+    }
+    my $item = App::Memcached::CLI::Item->new(key => $key);
+    unless ($item->remove($self->{ds})) {
+        warn "Failed to delete item. KEY $key";
         return;
     }
     print "OK\n";
