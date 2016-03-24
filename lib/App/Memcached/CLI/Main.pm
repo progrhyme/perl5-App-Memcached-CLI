@@ -19,13 +19,15 @@ use App::Memcached::CLI::Util ':all';
 use version; our $VERSION = 'v0.2.3';
 
 my %COMMAND2ALIASES = (
-    help      => ['\h'],
-    quit      => [qw(\q exit)],
-    display   => [qw(\d)],
-    stats     => [qw(\s)],
-    settings  => [qw(\c config)],
-    cachedump => [qw(\cd dump)],
-    get       => [],
+    help       => ['\h'],
+    quit       => [qw(\q exit)],
+    display    => [qw(\d)],
+    stats      => [qw(\s)],
+    settings   => [qw(\c config)],
+    cachedump  => [qw(\cd dump)],
+    detaildump => [qw(\dd)],
+    detail     => [],
+    get        => [],
 );
 my %COMMAND_OF;
 while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
@@ -162,6 +164,29 @@ Usage:
 EODESC
         },
         +{
+            command => 'detaildump',
+            summary => 'Show detail dump',
+            description => <<'EODESC',
+Description:
+    Report statistics about data access using KEY prefix. The default separator
+    for prefix is ':'.
+    If you have not enabled reporting at Memcached start-up, run "detail on".
+    See man memcached(1) for details.
+EODESC
+        },
+        +{
+            command => 'detail',
+            summary => 'Enable/Disable detail dump',
+            description => <<'EODESC',
+Usage:
+    > detail on
+    > detail off
+
+Description:
+    See "\h detaildump"
+EODESC
+        },
+        +{
             command => 'get',
             summary => 'Get data of KEY',
             description => <<'EODESC',
@@ -199,7 +224,7 @@ EODESC
     for my $info (@command_info) {
         my $cmd = $info->{command};
         my $commands = join(q{, }, _sorted_aliases_of($cmd));
-        $body .= sprintf "%-20s%s%s\n", $commands, $space, $info->{summary};
+        $body .= sprintf "%-24s%s%s\n", $commands, $space, $info->{summary};
     }
     $body .= "\nType \\h <command> for each.\n\n";
     print $body;
@@ -310,6 +335,30 @@ sub settings {
     for my $field (sort {$a cmp $b} (keys %stats)) {
         printf ("%24s  %16s\n", $field, $stats{$field});
     }
+    return 1;
+}
+
+sub detaildump {
+    my $self  = shift;
+    my $response = $self->{ds}->query("stats detail dump");
+    print "$_\n" for @$response;
+    return 1;
+}
+
+sub detail {
+    my $self = shift;
+    my $mode = shift || 'on';
+    unless (first { $_ eq $mode } qw/on off/) {
+        print "Mode must be 'on' or 'off'!\n";
+        return;
+    }
+    my $response = $self->{ds}->query("stats detail $mode");
+    print "$_\n" for @$response;
+    my %result = (
+        on  => 'Enabled',
+        off => 'Disabled',
+    );
+    print "$result{$mode} stats collection for detail dump.\n";
     return 1;
 }
 
