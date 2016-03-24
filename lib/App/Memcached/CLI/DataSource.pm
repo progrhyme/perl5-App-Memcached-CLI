@@ -58,11 +58,11 @@ sub get {
     return \%data;
 }
 
-sub set {
-    my $self = shift;
-    return $self->_store('set', @_);
-
-}
+sub set     { return &_store(shift, 'set', @_); }
+sub add     { return &_store(shift, 'add', @_); }
+sub replace { return &_store(shift, 'replace', @_); }
+sub append  { return &_store(shift, 'append',  @_); }
+sub prepend { return &_store(shift, 'prepend', @_); }
 
 sub _store {
     my $self   = shift;
