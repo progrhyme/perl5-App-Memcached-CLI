@@ -415,7 +415,7 @@ sub detaildump {
 
 sub detail {
     my $self = shift;
-    my $mode = shift || 'on';
+    my $mode = shift || q{};
     unless (first { $_ eq $mode } qw/on off/) {
         print "Mode must be 'on' or 'off'!\n";
         return;
