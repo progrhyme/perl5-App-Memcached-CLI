@@ -271,9 +271,11 @@ sub get {
     my $self = shift;
     my $key  = shift;
     my $item = App::Memcached::CLI::Item->find_by_get($key, $self->{ds});
-    return unless $item;
-
-    print $item->output;
+    unless ($item) {
+        print "Not found - $key\n";
+    } else {
+        print $item->output;
+    }
     return 1;
 }
 

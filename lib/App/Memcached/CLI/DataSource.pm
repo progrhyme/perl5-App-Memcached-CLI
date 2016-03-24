@@ -42,15 +42,17 @@ sub get {
 
     my %data = (key => $key);
     my $response = <$socket>;
-    if ($response =~ m/VALUE \S+ (\d+) (\d+)/) {
+    if ($response =~ m/^VALUE \S+ (\d+) (\d+)/) {
         $data{flags}  = $1;
         $data{length} = $2;
         read $socket, $response, $data{length};
         $data{value} = $response;
 
         while ($response !~ m/^END/) { $response = $self->_readline; }
+    } elsif ($response =~ m/^END/) {
+        # not found
     } else {
-        warn "KEY $key not found in $response";
+        warn "Unknown response for KEY '$key'. '$response'";
     }
 
     return \%data;
