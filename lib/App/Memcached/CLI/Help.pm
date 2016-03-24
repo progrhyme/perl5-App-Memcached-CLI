@@ -128,13 +128,11 @@ EODESC
         summary => 'Append data by KEY VALUE',
         description => <<'EODESC',
 Description:
-    Add data after the data server has with the KEY.
+    Append VALUE after existing data which has specified KEY.
 
 Usage:
-    > append <KEY> <VALUE> [<EXPIRE> [<FLAGS>]]
-    > append mykey1 MyValue1
-    > append mykey2 MyValue2 0     # Never expires. Default
-    > append mykey3 MyValue3 120 1
+    > append <KEY> <VALUE>
+    > append mykey MySuffix
 EODESC
     },
     +{
@@ -142,13 +140,11 @@ EODESC
         summary => 'Prepend data by KEY VALUE',
         description => <<'EODESC',
 Description:
-    Add data before the data server has with the KEY.
+    Put VALUE before existing data which has specified KEY.
 
 Usage:
-    > prepend <KEY> <VALUE> [<EXPIRE> [<FLAGS>]]
-    > prepend mykey1 MyValue1
-    > prepend mykey2 MyValue2 0     # Never expires. Default
-    > prepend mykey3 MyValue3 120 1
+    > prepend <KEY> <VALUE>
+    > prepend mykey MyPrefix
 EODESC
     },
     +{

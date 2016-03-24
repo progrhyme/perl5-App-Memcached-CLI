@@ -61,8 +61,14 @@ sub get {
 sub set     { return &_store(shift, 'set', @_); }
 sub add     { return &_store(shift, 'add', @_); }
 sub replace { return &_store(shift, 'replace', @_); }
-sub append  { return &_store(shift, 'append',  @_); }
-sub prepend { return &_store(shift, 'prepend', @_); }
+sub append  { return &_modify(shift, 'append',  @_); }
+sub prepend { return &_modify(shift, 'prepend', @_); }
+
+sub _modify {
+    my $self  = shift;
+    my ($cmd, $key, $value) = @_;
+    return $self->_store($cmd, $key, $value);
+}
 
 sub _store {
     my $self   = shift;
