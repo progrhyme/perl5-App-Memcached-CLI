@@ -2,6 +2,11 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.6.0 2016-03-24T13:31:51Z
+
+    - Feature: add optional argument for "stats" and "settings" to filter
+      results
+
 v0.5.4 2016-03-24T11:50:04Z
 
     - Update documentation. Add commands info into script Pod.
