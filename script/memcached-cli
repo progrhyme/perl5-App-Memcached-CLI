@@ -85,24 +85,26 @@ Displays slabs statistics.
 
 This command comes from I<memcached/memcached-tool>.
 
-=item B<stats|\s>
+=item B<stats|\s> I<REGEXP>
 
 Shows general statistics of memcached server by C<stats> command.
+You can filter the parameters of stats by optional I<REGEXP> argument.
 
-Just like I<memcached/memcached-tool> does.
+Comes from I<memcached/memcached-tool>.
 
-=item B<settings|config|\c>
+=item B<settings|config|\c> I<REGEXP>
 
 Shows memcached server settings by C<stats settings> command.
+You can filter the parameters of stats by optional I<REGEXP> argument.
 
-Just like I<memcached/memcached-tool> does.
+Comes from I<memcached/memcached-tool>, too.
 
-=item B<cachedump|dump|\cd> CLASS [NUMBER]
+=item B<cachedump|dump|\cd> I<CLASS> [I<NUMBER>]
 
-Shows keys and sizes and expiration times of some items in specified slab CLASS.
+Shows keys and sizes and expiration times of some items in specified slab I<CLASS>.
 
-You can specify NUMBER of items to show.
-Without NUMBER option, shows 20 items only by default.
+You can specify I<NUMBER> of items to show.
+Without I<NUMBER> option, shows 20 items only by default.
 
 =item B<detaildump|\dd>
 
@@ -114,29 +116,29 @@ command C<detail on>.
 
 See man B<memcached(1)> for details.
 
-=item B<detail> MODE
+=item B<detail> I<MODE>
 
 Enables or disables stats collection for C<stats detail dump> reporting.
 
-MODE should be either "on" or "off" to enable or to disable.
+I<MODE> should be either "on" or "off" to enable or to disable.
 
-=item B<get> KEY
+=item B<get> I<KEY>
 
-Gets one item in memcached by specified KEY and shows its data.
+Gets one item in memcached by specified I<KEY> and shows its data.
 
-=item B<set> KEY VALUE [EXPIRE [FLAGS]]
+=item B<set> I<KEY> I<VALUE> [I<EXPIRE> [I<FLAGS>]]
 
-Stores data into memcached by specified KEY, VALUE and optional EXPIRE and FLAGS.
+Stores data into memcached by specified I<KEY>, I<VALUE> and optional I<EXPIRE> and I<FLAGS>.
 
-=item B<delete> KEY
+=item B<delete> I<KEY>
 
-Deletes one item in memcached by specified KEY.
+Deletes one item in memcached by specified I<KEY>.
 
-=item B<flush_all|flush> [DELAY]
+=item B<flush_all|flush> [I<DELAY>]
 
 Invalidates all data in memcached by C<flush_all> command.
 
-With DELAY option, invalidation is delayed for specified seconds.
+With I<DELAY> option, invalidation is delayed for specified seconds.
 
 See official documentation of I<memcached> for details.
 
@@ -148,11 +150,11 @@ Shows memcahed server version.
 
 Exits program in interactive mode.
 
-=item B<help|\h> [COMMAND]
+=item B<help|\h> [I<COMMAND>]
 
-Shows available COMMANDs and summary of their usage.
+Shows available I<COMMAND>s and summary of their usage.
 
-With optional COMMAND argument, shows detailed information of it.
+With optional I<COMMAND> argument, shows detailed information of it.
 
 =back
 
