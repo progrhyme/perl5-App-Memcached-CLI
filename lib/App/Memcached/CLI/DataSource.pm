@@ -48,7 +48,7 @@ sub get {
         read $socket, $response, $data{length};
         $data{value} = $response;
 
-        while ($response !~ m/^END/) { $response = <$socket>; }
+        while ($response !~ m/^END/) { $response = $self->_readline; }
     } else {
         warn "KEY $key not found in $response";
     }
@@ -77,10 +77,7 @@ sub _query {
 
     my @response;
     while (1) {
-        local $SIG{ALRM} = sub { die 'Timed out to Read Socket.' };
-        alarm 3;
-        my $line = <$socket>;
-        alarm 0;
+        my $line = $self->_readline;
         $line =~ s/[\r\n]+$//;
         last if ($line =~ m/^(OK|END)/);
         die $line if ($line =~ m/^(CLIENT|SERVER_)?ERROR/);
@@ -88,6 +85,16 @@ sub _query {
     }
 
     return \@response;
+}
+
+sub _readline {
+    my $self   = shift;
+    my $socket = $self->{socket};
+    local $SIG{ALRM} = sub { die 'Timed out to Read Socket.' };
+    alarm 3;
+    my $line = <$socket>;
+    alarm 0;
+    return $line;
 }
 
 sub DESTROY {
