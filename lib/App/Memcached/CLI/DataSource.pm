@@ -59,16 +59,32 @@ sub get {
 sub query {
     my $self  = shift;
     my $query = shift;
+    my $response = eval {
+        return $self->_query($query);
+    };
+    if ($@) {
+        confess "Failed to query! query: $query ERROR: " . $@;
+    }
+    return $response;
+}
+
+sub _query {
+    my $self  = shift;
+    my $query = shift;
 
     my $socket = $self->{socket};
     print $socket "$query\r\n";
 
     my @response;
-    while (<$socket>) {
-        last if m/^(OK|END)/;
-        confess $_ if m/^(CLIENT|SERVER_)?ERROR/;
-        $_ =~ s/[\r\n]+$//;
-        push @response, $_;
+    while (1) {
+        local $SIG{ALRM} = sub { die 'Timed out to Read Socket.' };
+        alarm 3;
+        my $line = <$socket>;
+        alarm 0;
+        $line =~ s/[\r\n]+$//;
+        last if ($line =~ m/^(OK|END)/);
+        die $line if ($line =~ m/^(CLIENT|SERVER_)?ERROR/);
+        push @response, $line;
     }
 
     return \@response;
