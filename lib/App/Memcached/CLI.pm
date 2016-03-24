@@ -15,15 +15,21 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI - Interactive CLI for Memcached
+App::Memcached::CLI - Interactive/Batch CLI for Memcached
 
 =head1 SYNOPSIS
 
-    use App::Memcached::CLI;
+    use App::Memcached::CLI::Main;
+    my $params = App::Memcached::CLI->parse_args;
+    App::Memcached::CLI->new(%$params)->run;
 
 =head1 DESCRIPTION
 
-This package provides interactive CLI for Memcached.
+This package provides utility CLI for Memcached.
+
+The CLI can be both interactive one or batch script.
+
+See L<memcached-cli> for details.
 
 =head1 SEE ALSO
 

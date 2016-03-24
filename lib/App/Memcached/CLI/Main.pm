@@ -398,17 +398,19 @@ __END__
 
 =head1 NAME
 
-App::Memcached::CLI::Main - Interactive CLI for Memcached
+App::Memcached::CLI::Main - Interactive/Batch CLI for Memcached
 
 =head1 SYNOPSIS
 
     use App::Memcached::CLI::Main;
-    my $params = $Cli_Class->parse_args;
-    $Cli_Class->new(%$params)->run;
+    my $params = App::Memcached::CLI->parse_args;
+    App::Memcached::CLI->new(%$params)->run;
 
 =head1 DESCRIPTION
 
-This module is used for interactive CLI of Memcached.
+This module is used for CLI of Memcached.
+
+The CLI can be both interactive one or batch script.
 
 See L<memcached-cli> for details.
 
