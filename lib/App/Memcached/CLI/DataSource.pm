@@ -150,7 +150,23 @@ sub delete {
         return;
     }
     return 1;
+}
 
+sub touch {
+    my $self   = shift;
+    my $key    = shift;
+    my $expire = shift;
+
+    my $socket = $self->{socket};
+    print $socket "touch $key $expire\r\n";
+    my $response = $self->_readline;
+    if ($response =~ m/^NOT_FOUND/) {
+        debug "No such data KEY '$key'";
+        return;
+    } elsif ($response !~ m/^TOUCHED/) {
+        warn "Failed to touch '$key' with EXPIRE '$expire'";
+    }
+    return 1;
 }
 
 sub version {
