@@ -164,10 +164,33 @@ sub touch {
         debug "No such data KEY '$key'";
         return;
     } elsif ($response !~ m/^TOUCHED/) {
-        warn "Failed to touch '$key' with EXPIRE '$expire'";
+        warn "Failed to touch '$key' with EXPIRE '$expire'. RES: $response";
         return;
     }
     return 1;
+}
+
+sub incr { return &_incr_decr(shift, 'incr', @_); }
+sub decr { return &_incr_decr(shift, 'decr', @_); }
+
+sub _incr_decr {
+    my $self   = shift;
+    my $cmd    = shift;
+    my $key    = shift;
+    my $number = shift;
+
+    my $socket = $self->{socket};
+    print $socket "$cmd $key $number\r\n";
+    my $response = $self->_readline;
+    if ($response =~ m/^NOT_FOUND/) {
+        warn "No such data KEY '$key'";
+        return;
+    } elsif ($response !~ m/^(\d+)/) {
+        warn "Failed to $cmd '$key' by number '$number'. RES: $response";
+        return;
+    }
+    my $new_value = $1;
+    return $new_value;
 }
 
 sub version {
