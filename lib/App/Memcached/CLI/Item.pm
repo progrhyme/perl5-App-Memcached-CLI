@@ -8,7 +8,7 @@ use POSIX 'strftime';
 
 use App::Memcached::CLI::Util ':all';
 
-use version; our $VERSION = 'v0.7.0';
+use version; our $VERSION = 'v0.7.1';
 
 my @FIELDS = qw(key value length expire flags cas);
 my %DISP_METHOD_OF = (

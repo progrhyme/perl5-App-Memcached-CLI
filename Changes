@@ -2,6 +2,10 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.7.1 2016-03-25T17:16:56Z
+
+    - Feature: implement "incr", "decr" command to add/subtract data value
+
 v0.7.0 2016-03-25T16:45:25Z
 
     - Feature: implement "touch" command to update EXPIRE of data
