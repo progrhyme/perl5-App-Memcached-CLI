@@ -12,7 +12,7 @@ our @EXPORT_OK = qw(
 );
 our %EXPORT_TAGS = (all => \@EXPORT_OK);
 
-use version; our $VERSION = 'v0.6.3';
+use version; our $VERSION = 'v0.6.4';
 
 my $DEFAULT_PORT = 11211;
 

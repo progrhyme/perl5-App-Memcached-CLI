@@ -2,6 +2,10 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.6.4 2016-03-25T16:19:04Z
+
+    - Improve: at 'cachedump' show items in more readable LTSV format
+
 v0.6.3 2016-03-24T19:36:15Z
 
     - Feature: support multiple key specification for "get" and "gets" command
