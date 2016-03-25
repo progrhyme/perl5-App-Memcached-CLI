@@ -333,7 +333,15 @@ sub cachedump {
         return;
     }
     my $response = $self->{ds}->query("stats cachedump $class $num");
-    print "$_\n" for @$response;
+    for my $line (@$response) {
+        if ($line !~ m/^ITEM (\S+) \[(\d+) b; (\d+) s\]/) {
+            warn "Unknown response: $line";
+            next;
+        }
+        my %data = (key => $1, length => $2, expire => $3);
+        my $item = App::Memcached::CLI::Item->new(%data);
+        $item->output_line;
+    }
     return 1;
 }
 
