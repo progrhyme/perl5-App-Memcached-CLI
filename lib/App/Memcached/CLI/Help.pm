@@ -180,6 +180,24 @@ Usage:
 EODESC
     },
     +{
+        command => 'incr',
+        summary => 'Add numeric VALUE for a data',
+        description => <<'EODESC',
+Usage:
+    > incr <KEY> <VALUE>
+    > incr foo 1
+EODESC
+    },
+    +{
+        command => 'decr',
+        summary => 'Reduce numeric VALUE from a data',
+        description => <<'EODESC',
+Usage:
+    > decr <KEY> <VALUE>
+    > decr foo 1
+EODESC
+    },
+    +{
         command => 'delete',
         summary => 'Delete data by KEY',
         description => <<'EODESC',

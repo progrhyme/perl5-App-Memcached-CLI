@@ -39,6 +39,8 @@ my %COMMAND2ALIASES = (
     append     => [],
     prepend    => [],
     cas        => [],
+    incr       => [],
+    decr       => [],
     touch      => [],
     delete     => [],
     flush_all  => [qw(flush)],
@@ -298,6 +300,31 @@ sub cas {
         return 1;
     }
     print "OK\n";
+    return 1;
+}
+
+sub incr { return &_incr_decr(shift, 'incr', @_); }
+sub decr { return &_incr_decr(shift, 'decr', @_); }
+
+sub _incr_decr {
+    my $self   = shift;
+    my $cmd    = shift;
+    my $key    = shift;
+    my $number = shift;
+    unless ($key and defined $number) {
+        print "No KEY or VALUE specified.\n";
+        return;
+    }
+    unless ($number =~ m/^\d+$/) {
+        print "Give numeric number for $cmd VALUE.\n";
+        return;
+    }
+    my $new_value = $self->{ds}->$cmd($key, $number);
+    unless (defined $new_value) {
+        print "FAILED - $cmd\n";
+        return;
+    }
+    print "OK. New VALUE is $new_value\n";
     return 1;
 }
 
