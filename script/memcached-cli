@@ -124,11 +124,11 @@ I<MODE> should be either "on" or "off" to enable or to disable.
 
 =item B<get> I<KEY1> [I<KEY2> ...]
 
-Gets items in memcached by specified I<KEY>s and shows their data.
+Gets items in memcached by specified I<KEYs> and shows their data.
 
 =item B<gets> I<KEY1> [I<KEY2> ...]
 
-Gets items with I<CAS> data in memcached by specified I<KEY>s and shows their
+Gets items with I<CAS> data in memcached by specified I<KEYs> and shows their
 data.
 
 =item B<set> I<KEY> I<VALUE> [I<EXPIRE> [I<FLAGS>]]
@@ -159,6 +159,10 @@ Puts I<VALUE> before existing data in memcached which has specified I<KEY>.
 Stores data into memcached by specified I<KEY>, I<VALUE> and optional I<EXPIRE>
 and I<FLAGS> only when I<CAS> of data is not changed from specified I<CAS> value.
 
+=item B<touch> I<KEY> I<EXPIRE>
+
+Update data expiration time with specified I<KEY> and I<EXPIRE>.
+
 =item B<delete> I<KEY>
 
 Deletes one item in memcached by specified I<KEY>.
@@ -181,7 +185,7 @@ Exits program in interactive mode.
 
 =item B<help|\h> [I<COMMAND>]
 
-Shows available I<COMMAND>s and summary of their usage.
+Shows available I<COMMANDs> and summary of their usage.
 
 With optional I<COMMAND> argument, shows detailed information of it.
 
