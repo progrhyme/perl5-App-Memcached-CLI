@@ -8,7 +8,7 @@ v0.6.4 2016-03-25T16:19:04Z
 
 v0.6.3 2016-03-24T19:36:15Z
 
-    - Feature: support multiple key specification for "get" and "gets" command
+    - Feature: support multiple keys retrieval in "get" and "gets" command
 
 v0.6.2 2016-03-24T18:45:17Z
 
