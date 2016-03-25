@@ -82,6 +82,20 @@ sub output {
     }
 }
 
+sub output_line {
+    my $self = shift;
+    my @kv;
+    for my $key (@FIELDS) {
+        my $value = $self->{$key};
+        if (my $_method = $DISP_METHOD_OF{$key}) {
+            $value = $self->$_method;
+        }
+        next unless defined $value;
+        push @kv, join(q{:}, $key, $value);
+    }
+    printf "%s\n", join("\t", @kv);
+}
+
 sub disp_length {
     my $self = shift;
     $self->{disp_length} ||= sub {
