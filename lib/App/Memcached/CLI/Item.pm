@@ -4,9 +4,18 @@ use strict;
 use warnings;
 use 5.008_001;
 
+use POSIX 'strftime';
+
 use App::Memcached::CLI::Util ':all';
 
 use version; our $VERSION = 'v0.6.3';
+
+my @FIELDS = qw(key value length expire flags cas);
+my %DISP_METHOD_OF = (
+    value  => 'disp_value',
+    length => 'disp_length',
+    expire => 'disp_expire',
+);
 
 my $DISPLAY_DATA_LENGTH = 320;
 
@@ -63,10 +72,9 @@ sub remove {
 sub output {
     my $self = shift;
     my $space = q{ } x 4;
-    my %method = (value => 'disp_value');
-    for my $key (qw/key value flags length cas/) {
+    for my $key (@FIELDS) {
         my $value = $self->{$key};
-        if (my $_method = $method{$key}) {
+        if (my $_method = $DISP_METHOD_OF{$key}) {
             $value = $self->$_method;
         }
         next unless defined $value;
@@ -74,10 +82,33 @@ sub output {
     }
 }
 
+sub disp_length {
+    my $self = shift;
+    $self->{disp_length} ||= sub {
+        return unless (defined $self->{length});
+        my $length = $self->{length};
+        if ($length >= 1024) {
+            return sprintf '%.1fKB', $length / 1024.0;
+        }
+        return "${length}B";
+    }->();
+    return $self->{disp_length};
+}
+
+sub disp_expire {
+    my $self = shift;
+    $self->{disp_expire} ||= sub {
+        return unless (defined $self->{expire});
+        return strftime('%F %T', localtime($self->{expire}));
+    }->();
+    return $self->{disp_expire};
+}
+
 sub disp_value {
     my $self = shift;
     $self->{disp_value} ||= sub {
         my $text = $self->value_text;
+        return unless (defined $text);
         return $text if (length $text <= $DISPLAY_DATA_LENGTH);
 
         my $length = length $text;
@@ -91,6 +122,7 @@ sub disp_value {
 sub value_text {
     my $self = shift;
     $self->{value_text} ||= sub {
+        return unless (defined $self->{value});
         if ($self->{value} !~ m/^[\x21-\x7e\s]/) {
             return '(Not ASCII)';
         }
