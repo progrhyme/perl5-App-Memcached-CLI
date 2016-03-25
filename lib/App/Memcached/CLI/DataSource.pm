@@ -165,6 +165,7 @@ sub touch {
         return;
     } elsif ($response !~ m/^TOUCHED/) {
         warn "Failed to touch '$key' with EXPIRE '$expire'";
+        return;
     }
     return 1;
 }

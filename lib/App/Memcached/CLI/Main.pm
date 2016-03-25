@@ -309,6 +309,10 @@ sub touch {
         print "No KEY or EXPIRE specified.\n";
         return;
     }
+    unless ($expire =~ m/^\d+$/) {
+        print "Give numeric number for EXPIRE.\n";
+        return;
+    }
     unless ($self->{ds}->touch($key, $expire)) {
         print "Failed to touch. KEY $key maybe missing\n";
         return;
