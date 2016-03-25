@@ -91,7 +91,7 @@ sub output_line {
             $value = $self->$_method;
         }
         next unless defined $value;
-        push @kv, join(q{:}, $key, $value);
+        push @kv, join(q{:}, ucfirst $key, $value);
     }
     printf "%s\n", join("\t", @kv);
 }
