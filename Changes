@@ -2,6 +2,10 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.7.0 2016-03-25T16:45:25Z
+
+    - Feature: implement "touch" command to update EXPIRE of data
+
 v0.6.4 2016-03-25T16:19:04Z
 
     - Improve: at 'cachedump' show items in more readable LTSV format

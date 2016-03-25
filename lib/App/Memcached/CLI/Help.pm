@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use 5.008_001;
 
-use version; our $VERSION = 'v0.6.4';
+use version; our $VERSION = 'v0.7.0';
 
 our @COMMANDS_INFO = (
     +{
