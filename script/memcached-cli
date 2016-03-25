@@ -163,6 +163,14 @@ and I<FLAGS> only when I<CAS> of data is not changed from specified I<CAS> value
 
 Update data expiration time with specified I<KEY> and I<EXPIRE>.
 
+=item B<incr> I<KEY> I<VALUE>
+
+Add numeric I<VALUE> for a data with specified I<KEY>.
+
+=item B<decr> I<KEY> I<VALUE>
+
+Subtract numeric I<VALUE> from a data with specified I<KEY>.
+
 =item B<delete> I<KEY>
 
 Deletes one item in memcached by specified I<KEY>.

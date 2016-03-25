@@ -139,6 +139,14 @@ A couple of features of following commands derives from
 
     Update data expiration time with specified _KEY_ and _EXPIRE_.
 
+- **incr** _KEY_ _VALUE_
+
+    Add numeric _VALUE_ for a data with specified _KEY_.
+
+- **decr** _KEY_ _VALUE_
+
+    Subtract numeric _VALUE_ from a data with specified _KEY_.
+
 - **delete** _KEY_
 
     Deletes one item in memcached by specified _KEY_.
