@@ -170,6 +170,16 @@ Usage:
 EODESC
     },
     +{
+        command => 'touch',
+        summary => 'Update data with new EXPIRE',
+        description => <<'EODESC',
+Usage:
+    > touch <KEY> <EXPIRE>
+    > touch foo 300  # will expire in 5 min
+    > touch bar 0    # will never expire
+EODESC
+    },
+    +{
         command => 'delete',
         summary => 'Delete data by KEY',
         description => <<'EODESC',

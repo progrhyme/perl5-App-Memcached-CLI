@@ -39,6 +39,7 @@ my %COMMAND2ALIASES = (
     append     => [],
     prepend    => [],
     cas        => [],
+    touch      => [],
     delete     => [],
     flush_all  => [qw(flush)],
 );
@@ -295,6 +296,22 @@ sub cas {
     unless ($item->save($self->{ds}, command => 'cas')) {
         print "Failed to cas item. KEY $key, VALUE $value\n";
         return 1;
+    }
+    print "OK\n";
+    return 1;
+}
+
+sub touch {
+    my $self   = shift;
+    my $key    = shift;
+    my $expire = shift;
+    unless ($key and defined $expire) {
+        print "No KEY or EXPIRE specified.\n";
+        return;
+    }
+    unless ($self->{ds}->touch($key, $expire)) {
+        print "Failed to touch. KEY $key maybe missing\n";
+        return;
     }
     print "OK\n";
     return 1;
