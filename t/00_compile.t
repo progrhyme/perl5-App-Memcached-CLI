@@ -32,5 +32,7 @@ sub test_scripts {
     my $found = $_;
     return unless (-f $found && $found =~ m/^[^\.]/);
     require_ok($found);
-    ok -x $found, "$found is executable";
+    unless ($^O =~ m/^MSWin32$/) {
+        ok -x $found, "$found is executable";
+    }
 }
