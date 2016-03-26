@@ -135,7 +135,12 @@ sub cas {
 
     $self->{socket}->write("cas $key $flags $expire $bytes $cas\r\n");
     $self->{socket}->write("$value\r\n");
-    my $response = $self->_readline;
+    my $response = eval {
+        return $self->_readline;
+    };
+    if ($@) {
+        confess qq{Failed to store data by "cas"! ($key, $value) ERROR: } . $@;
+    }
     if ($response !~ m/^STORED/) {
         debug qq{Failed to set data as ($key, $value) with cas $cas};
         return;
