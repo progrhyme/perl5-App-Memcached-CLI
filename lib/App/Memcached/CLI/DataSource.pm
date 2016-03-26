@@ -6,6 +6,7 @@ use 5.008_001;
 
 use Carp;
 use IO::Socket;
+use Time::HiRes;
 
 use App::Memcached::CLI::Util qw(is_unixsocket debug);
 
@@ -209,6 +210,47 @@ sub query_one {
         confess "Failed to query! query: $query ERROR: " . $@;
     }
     chomp $response;
+    return $response;
+}
+
+sub query_any {
+    my $self  = shift;
+    my $query = shift;
+
+    $self->{socket}->write("$query\r\n");
+
+    # Save blocking mode
+    my $blocking_mode = $self->{socket}->blocking;
+
+    my $response = eval {
+        local $SIG{ALRM} = sub { die 'Timed out to Read Socket.' };
+        alarm 5;
+        my $resp = q{};
+        $self->{socket}->blocking(0);
+        my $getline_from_sock = sub {
+            for my $i (1..3) {
+                my $line = $self->{socket}->getline;
+                return $line if defined $line;
+                #debug "failed to getline - $i. query: $query";
+                Time::HiRes::sleep(0.01);
+            }
+            return;
+        };
+        while (my $line = $getline_from_sock->()) {
+            $resp .= $line;
+        }
+        alarm 0;
+        return $resp;
+    };
+    my $err = $@;
+
+    # Restore blocking mode
+    $self->{socket}->blocking($blocking_mode);
+
+    if ($err) {
+        confess "Failed to query! query: $query ERROR: " . $err;
+    }
+
     return $response;
 }
 
