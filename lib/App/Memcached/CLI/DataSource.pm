@@ -47,9 +47,8 @@ sub _retrieve {
     my $self = shift;
     my ($cmd, $keys) = @_;
 
-    my $socket = $self->{socket};
     my $key_str = join(q{ }, @$keys);
-    print $socket "$cmd $key_str\r\n";
+    $self->{socket}->write("$cmd $key_str\r\n");
 
     my @results;
 
@@ -65,7 +64,7 @@ sub _retrieve {
             );
             local $SIG{ALRM} = sub { die 'Timed out to Read Socket.' };
             alarm 3;
-            read $socket, $response, $data{length};
+            $self->{socket}->read($response, $data{length});
             alarm 0;
             $data{value} = $response;
             push @results, \%data;
@@ -105,9 +104,8 @@ sub _store {
         return length $value;
     }->();
 
-    my $socket = $self->{socket};
-    print $socket "$cmd $key $flags $expire $bytes\r\n";
-    print $socket "$value\r\n";
+    $self->{socket}->write("$cmd $key $flags $expire $bytes\r\n");
+    $self->{socket}->write("$value\r\n");
     my $response = eval {
         return $self->_readline;
     };
@@ -135,9 +133,8 @@ sub cas {
         return length $value;
     }->();
 
-    my $socket = $self->{socket};
-    print $socket "cas $key $flags $expire $bytes $cas\r\n";
-    print $socket "$value\r\n";
+    $self->{socket}->write("cas $key $flags $expire $bytes $cas\r\n");
+    $self->{socket}->write("$value\r\n");
     my $response = $self->_readline;
     if ($response !~ m/^STORED/) {
         debug qq{Failed to set data as ($key, $value) with cas $cas};
@@ -199,8 +196,7 @@ sub query_one {
     my $self  = shift;
     my $query = shift;
 
-    my $socket = $self->{socket};
-    print $socket "$query\r\n";
+    $self->{socket}->write("$query\r\n");
     my $response = eval {
         return $self->_readline;
     };
@@ -227,8 +223,7 @@ sub _query {
     my $self  = shift;
     my $query = shift;
 
-    my $socket = $self->{socket};
-    print $socket "$query\r\n";
+    $self->{socket}->write("$query\r\n");
 
     my @response;
     while (1) {
@@ -243,11 +238,10 @@ sub _query {
 }
 
 sub _readline {
-    my $self   = shift;
-    my $socket = $self->{socket};
+    my $self = shift;
     local $SIG{ALRM} = sub { die 'Timed out to Read Socket.' };
     alarm 3;
-    my $line = <$socket>;
+    my $line = $self->{socket}->getline;
     alarm 0;
     return $line;
 }
