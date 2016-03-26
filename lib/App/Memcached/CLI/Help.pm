@@ -77,6 +77,19 @@ Description:
 EODESC
     },
     +{
+        command => 'randomset',
+        summary => 'Generate sample data and SET them',
+        description => <<'EODESC',
+Usage:
+    > randomset [<NUMBER> [<MAX_LENGTH> [<MIN_LENGTH> [<NAMESPACE>]]]]
+    > randomset                     # generate 100 data
+    > randomset 50                  # generate 50 data
+    > randomset 50 1024             # data length:   1-1024B
+    > randomset 50 1024 256         # data length: 256-1024B
+    > randomset 50 1024 256 sample1 # prefix 'sample1:'
+EODESC
+    },
+    +{
         command => 'get',
         summary => 'Get data by KEYs',
         description => <<'EODESC',

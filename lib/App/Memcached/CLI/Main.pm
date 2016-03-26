@@ -10,6 +10,7 @@ use Getopt::Long qw(:config posix_default no_ignore_case no_ignore_case_always);
 use IO::Socket::INET;
 use List::Util qw(first);
 use Term::ReadLine;
+use Time::HiRes;
 
 use App::Memcached::CLI;
 use App::Memcached::CLI::DataSource;
@@ -31,6 +32,7 @@ my %COMMAND2ALIASES = (
     cachedump  => [qw(\cd dump)],
     detaildump => [qw(\dd)],
     detail     => [],
+    randomset  => [qw(sample)],
     get        => [],
     gets       => [],
     set        => [],
@@ -541,6 +543,35 @@ sub flush_all {
     if ($delay) { $query .= " $delay"; }
     my $response = $self->{ds}->query_one($query);
     print "$response\n";
+    return 1;
+}
+
+sub randomset {
+    my $self = shift;
+    my ($num, $max, $min, $namespace) = @_;
+    $num    ||= 100;
+    $max    ||= 1_000_000;
+    $min    ||= 1;
+    $namespace ||= 'memcached-cli:sample';
+
+    local $| = 1; # disable output buffering
+    print "Random Generate. [";
+    my $pos = 0;
+    for my $i (1..$num) {
+        my $key    = $namespace . ":data$i";
+        my $length = int( rand() * ($max - $min) ) + $min;
+        my $value  = '.' x $length;
+        unless ($self->{ds}->set($key, $value)) {
+            warn "Failed to set KEY $key, length: $length B";
+        }
+        if ( (my $_pos = int($i*20 / $num)) > $pos ) {
+            $pos = $_pos;
+            print '.';
+        }
+        Time::HiRes::sleep(0.1) if ($i % 100 == 0);
+    }
+    print "]\n";
+    print "Complete.\n";
     return 1;
 }
 
