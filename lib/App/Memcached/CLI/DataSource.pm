@@ -105,7 +105,12 @@ sub _store {
     my $socket = $self->{socket};
     print $socket "$cmd $key $flags $expire $bytes\r\n";
     print $socket "$value\r\n";
-    my $response = $self->_readline;
+    my $response = eval {
+        return $self->_readline;
+    };
+    if ($@) {
+        confess qq{Failed to store data by "$cmd"! ($key, $value) ERROR: } . $@;
+    }
     if ($response !~ m/^STORED/) {
         debug qq{Failed to $cmd data as ($key, $value)};
         return;
