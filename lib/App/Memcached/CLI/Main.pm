@@ -44,6 +44,7 @@ my %COMMAND2ALIASES = (
     touch      => [],
     delete     => [],
     flush_all  => [qw(flush)],
+    call       => [],
 );
 my %COMMAND_OF;
 while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
@@ -219,6 +220,18 @@ sub _sorted_aliases_of {
     my @aliases = @{$COMMAND2ALIASES{$command}};
     return (shift @aliases, $command, @aliases) if @aliases;
     return ($command);
+}
+
+sub call {
+    my $self = shift;
+    my @commands = @_;
+    unless (@commands) {
+        print "No COMMAND given.\n";
+        return;
+    }
+    my $response = $self->{ds}->query_any(join q{ }, @commands);
+    print $response;
+    return 1;
 }
 
 sub get {

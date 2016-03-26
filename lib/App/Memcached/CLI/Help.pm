@@ -215,6 +215,18 @@ Usage:
     > flush_all 60        # Invalidate after 60 seconds
 EODESC
     },
+    +{
+        command => 'call',
+        summary => 'Execute any command',
+        description => <<'EODESC',
+Description:
+    This command executes any commands given as arguments.
+Usage:
+    > call version
+    > call get myKey
+    > call stats conns
+EODESC
+    },
 );
 
 1;
