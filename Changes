@@ -2,6 +2,13 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.9.4 2016-03-26T06:04:43Z
+
+    - Bug Fix: in "dump_all" command, set expiration time 0 correctly for data
+      which never expires.
+    - Feature: implement "restore_dump" command to load data from dump file
+      created by "dump_all".
+
 v0.9.3 2016-03-26T05:25:48Z
 
     - Feature: implement "dump_all" command as "dump" mode in "memcached-tool"

@@ -69,6 +69,6 @@
          "web" : "https://github.com/key-amb/perl5-App-Memcached-CLI"
       }
    },
-   "version" : "v0.9.3",
+   "version" : "v0.9.4",
    "x_authority" : "cpan:KEYAMB"
 }
