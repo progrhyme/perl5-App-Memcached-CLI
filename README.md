@@ -173,6 +173,25 @@ A couple of features of following commands derives from
 
     See official documentation of _memcached_ for details.
 
+- **call** _COMMAND_ \[_ARGS_ ...\]
+
+    Executes any commands given as arguments.
+
+    With this command, you can execute any command against Memcached including what
+    is not implemented as normal commands in this program.
+
+    Here are some examples:
+
+    ```
+    > call stats conns
+    > call slabs reassign 6 10
+    > call flush_all
+    ```
+
+    LIMITATION:
+
+    Multi-lined queries like `set` are not supported.
+
 - **version**
 
     Shows memcahed server version.
