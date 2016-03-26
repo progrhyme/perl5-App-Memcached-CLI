@@ -137,6 +137,12 @@ Enables or disables stats collection for C<stats detail dump> reporting.
 
 I<MODE> should be either "on" or "off" to enable or to disable.
 
+=item B<randomset|sample> [I<NUMBER> [I<MAX_LENGTH> [I<MIN_LENGTH> [I<NAMESPACE>]]]]
+
+Generates random sample data and SET all of them.
+
+By default, it generates 100 data whose length is between 1B and 1000kB with prefix "memcached-cli:sample";
+
 =item B<get> I<KEY1> [I<KEY2> ...]
 
 Gets items in memcached by specified I<KEYs> and shows their data.

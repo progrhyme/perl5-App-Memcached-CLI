@@ -113,6 +113,12 @@ A couple of features of following commands derives from
 
     _MODE_ should be either "on" or "off" to enable or to disable.
 
+- **randomset|sample** \[_NUMBER_ \[_MAX\_LENGTH_ \[_MIN\_LENGTH_ \[_NAMESPACE_\]\]\]\]
+
+    Generates random sample data and SET all of them.
+
+    By default, it generates 100 data whose length is between 1B and 1000kB with prefix "memcached-cli:sample";
+
 - **get** _KEY1_ \[_KEY2_ ...\]
 
     Gets items in memcached by specified _KEYs_ and shows their data.
