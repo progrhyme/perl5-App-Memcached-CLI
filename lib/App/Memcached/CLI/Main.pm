@@ -575,6 +575,7 @@ sub dump_all {
                 print "add $d->{key} $d->{flags} $expire $d->{length}\r\n";
                 print "$d->{value}\r\n";
             }
+            Time::HiRes::sleep(0.01);
         }
     }
 
