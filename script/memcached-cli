@@ -143,6 +143,14 @@ Dumps whole data in Memcached server.
 
 This command comes from I<memcached/memcached-tool>.
 
+Recommended to use in batch mode like bellow:
+
+    memcached-cli SERVER:PORT dump_all > /path/to/dump.txt
+
+=item B<restore_dump> I<FILE>
+
+Restore data from dump data file created by C<dump_all>.
+
 =item B<randomset|sample> [I<NUMBER> [I<MAX_LENGTH> [I<MIN_LENGTH> [I<NAMESPACE>]]]]
 
 Generates random sample data and SET all of them.

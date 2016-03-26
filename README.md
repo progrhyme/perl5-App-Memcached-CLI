@@ -119,6 +119,16 @@ A couple of features of following commands derives from
 
     This command comes from _memcached/memcached-tool_.
 
+    Recommended to use in batch mode like bellow:
+
+    ```
+    memcached-cli SERVER:PORT dump_all > /path/to/dump.txt
+    ```
+
+- **restore\_dump** _FILE_
+
+    Restore data from dump data file created by `dump_all`.
+
 - **randomset|sample** \[_NUMBER_ \[_MAX\_LENGTH_ \[_MIN\_LENGTH_ \[_NAMESPACE_\]\]\]\]
 
     Generates random sample data and SET all of them.
