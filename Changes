@@ -2,6 +2,12 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.9.0 2016-03-26T03:42:39Z
+
+    - Feature: implement "call" command which executes any command given as
+      arguments for Memcached.
+    - Improve: set timeout or improve error handling for some commands.
+
 v0.8.0 2016-03-26T00:29:36Z
 
     - Change:
