@@ -84,6 +84,8 @@ sub output {
 
 sub output_line {
     my $self = shift;
+    $self->{disp_max_value_length} = 100;
+
     my @kv;
     for my $key (@FIELDS) {
         my $value = $self->{$key};
@@ -120,17 +122,16 @@ sub disp_expire {
 
 sub disp_value {
     my $self = shift;
-    $self->{disp_value} ||= sub {
-        my $text = $self->value_text;
-        return unless (defined $text);
-        return $text if (length $text <= $DISPLAY_DATA_LENGTH);
+    my $text = $self->value_text;
+    return unless (defined $text);
 
-        my $length = length $text;
-        my $result = substr($text, 0, $DISPLAY_DATA_LENGTH - 1);
-        $result .= '...(the rest is skipped)';
-        return $result;
-    }->();
-    return $self->{disp_value};
+    my $max_length = $self->{disp_max_value_length} || $DISPLAY_DATA_LENGTH;
+    return $text if (length $text <= $max_length);
+
+    my $length = length $text;
+    my $result = substr($text, 0, $max_length - 1);
+    $result .= '...(skipped)';
+    return $result;
 }
 
 sub value_text {
