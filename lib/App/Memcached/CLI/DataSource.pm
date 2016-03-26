@@ -195,8 +195,6 @@ sub _incr_decr {
     return $new_value;
 }
 
-sub version { return &query_one(shift, 'version'); }
-
 sub query_one {
     my $self  = shift;
     my $query = shift;

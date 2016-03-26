@@ -369,7 +369,7 @@ sub delete {
 
 sub version {
     my $self = shift;
-    my $version = $self->{ds}->version;
+    my $version = $self->{ds}->query_one('version');
     print "$version\n";
     return 1;
 }
