@@ -54,7 +54,7 @@ sub _retrieve {
     my @results;
 
     while (1) {
-        my $response = <$socket>;
+        my $response = $self->_readline;
         next if ($response =~ m/^[\r\n]+$/);
         if ($response =~ m/^VALUE (\S+) (\d+) (\d+)(?: (\d+))?/) {
             my %data = (
