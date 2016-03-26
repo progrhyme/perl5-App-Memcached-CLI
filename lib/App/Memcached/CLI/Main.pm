@@ -145,6 +145,11 @@ sub run_interactive {
             $exit_loop = 1;
             next;
         }
+        unless ($self->{ds}->ping) {
+            print "Server has gone away.\n";
+            $exit_loop = 1;
+            next;
+        }
 
         my $ret = $self->$command(@args);
         unless ($ret) {

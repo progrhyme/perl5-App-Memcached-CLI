@@ -34,6 +34,19 @@ sub connect {
     return $class->new(socket => $socket);
 }
 
+sub ping {
+    my $self = shift;
+    my $version = eval {
+        return $self->query_one('version');
+    };
+    if (!$version or $@) {
+        debug "Ping failed.";
+        debug "ERROR: " . $@ if $@;
+        return;
+    }
+    return 1;
+}
+
 sub get {
     my $self = shift;
     return $self->_retrieve('get', shift);
@@ -209,7 +222,7 @@ sub query_one {
     if ($@) {
         confess "Failed to query! query: $query ERROR: " . $@;
     }
-    chomp $response;
+    chomp $response if $response;
     return $response;
 }
 
