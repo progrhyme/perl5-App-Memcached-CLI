@@ -81,6 +81,14 @@ EODESC
         summary => 'Dump whole server data',
     },
     +{
+        command => 'restore_dump',
+        summary => 'Restore data from dump',
+        description => <<'EODESC',
+Usage:
+    > restore_dump FILE
+EODESC
+    },
+    +{
         command => 'randomset',
         summary => 'Generate sample data and SET them',
         description => <<'EODESC',

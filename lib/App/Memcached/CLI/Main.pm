@@ -23,31 +23,32 @@ use version; our $VERSION = 'v0.9.3';
 my $PROGRAM = basename $0;
 
 my %COMMAND2ALIASES = (
-    help       => ['\h'],
-    version    => ['\v'],
-    quit       => [qw(\q exit)],
-    display    => [qw(\d)],
-    stats      => [qw(\s)],
-    settings   => [qw(\c config)],
-    cachedump  => [qw(\cd)],
-    detaildump => [qw(\dd)],
-    detail     => [],
-    dump_all   => [],
-    randomset  => [qw(sample)],
-    get        => [],
-    gets       => [],
-    set        => [],
-    add        => [],
-    replace    => [],
-    append     => [],
-    prepend    => [],
-    cas        => [],
-    incr       => [],
-    decr       => [],
-    touch      => [],
-    delete     => [],
-    flush_all  => [qw(flush)],
-    call       => [],
+    help         => ['\h'],
+    version      => ['\v'],
+    quit         => [qw(\q exit)],
+    display      => [qw(\d)],
+    stats        => [qw(\s)],
+    settings     => [qw(\c config)],
+    cachedump    => [qw(\cd)],
+    detaildump   => [qw(\dd)],
+    detail       => [],
+    dump_all     => [],
+    restore_dump => [],
+    randomset    => [qw(sample)],
+    get          => [],
+    gets         => [],
+    set          => [],
+    add          => [],
+    replace      => [],
+    append       => [],
+    prepend      => [],
+    cas          => [],
+    incr         => [],
+    decr         => [],
+    touch        => [],
+    delete       => [],
+    flush_all    => [qw(flush)],
+    call         => [],
 );
 my %COMMAND_OF;
 while (my ($cmd, $aliases) = each %COMMAND2ALIASES) {
@@ -579,6 +580,29 @@ sub dump_all {
         }
     }
 
+    return 1;
+}
+
+sub restore_dump {
+    my $self = shift;
+    my $file = shift;
+    unless ($file and -r $file) {
+        print "Dump FILE not found.\n";
+        return;
+    }
+
+    open my $fh, '<', $file or die "Can't read $file!";
+    my $i = 0;
+    while (my $input = $fh->getline) {
+        $i++;
+        $self->{ds}->{socket}->write($input);
+        if ($i%200 == 0) {
+            printf "%s...loaded $i lines\n", q[ ] x 4;
+            $self->{ds}->{socket}->flush;
+            Time::HiRes::sleep(0.03);
+        }
+    }
+    print "Complete.\n";
     return 1;
 }
 
