@@ -142,9 +142,7 @@ sub delete {
     my $self = shift;
     my $key  = shift;
 
-    my $socket = $self->{socket};
-    print $socket "delete $key\r\n";
-    my $response = $self->_readline;
+    my $response = $self->query_one("delete $key");
     if ($response !~ m/^DELETED/) {
         warn "Failed to delete '$key'";
         return;
@@ -157,9 +155,7 @@ sub touch {
     my $key    = shift;
     my $expire = shift;
 
-    my $socket = $self->{socket};
-    print $socket "touch $key $expire\r\n";
-    my $response = $self->_readline;
+    my $response = $self->query_one("touch $key $expire");
     if ($response =~ m/^NOT_FOUND/) {
         debug "No such data KEY '$key'";
         return;
@@ -179,9 +175,7 @@ sub _incr_decr {
     my $key    = shift;
     my $number = shift;
 
-    my $socket = $self->{socket};
-    print $socket "$cmd $key $number\r\n";
-    my $response = $self->_readline;
+    my $response = $self->query_one("$cmd $key $number");
     if ($response =~ m/^NOT_FOUND/) {
         warn "No such data KEY '$key'";
         return;
