@@ -44,8 +44,22 @@ Run an interactive CLI:
 These above turns into interactive mode like below:
 
     memcached@SERVER:PORT>
-    memcached@SERVER:PORT> \h    # show help
-    memcached@SERVER:PORT> \d    # display slabs info
+    memcached@SERVER:PORT> set foo Foo
+    OK
+    memcached@SERVER:PORT> add bar Bar 300
+    OK
+    memcached@SERVER:PORT> gets foo bar
+    Key:foo Value:Foo       Length:3B       Flags:0 Cas:219
+    Key:bar Value:Bar       Length:3B       Flags:0 Cas:220
+    memcached@SERVER:PORT> \cd 1  # Alias of 'cachedump'
+    Key:foo Value:Foo       Length:3B       Expire:2016-03-26 00:30:27      Flags:0 Cas:219
+    Key:bar Value:Bar       Length:3B       Expire:2016-03-26 09:53:19      Flags:0 Cas:220
+    Key:baz Value:Baz       Length:3B       Expire:2016-03-26 10:49:05      Flags:123       Cas:221
+    memcached@SERVER:PORT> delete foo
+    OK
+    memcached@SERVER:PORT> flush_all
+    OK
+    memcached@SERVER:PORT> \q     # Quit interactive mode
 
 Run as batch script:
 
@@ -58,8 +72,8 @@ Show Help/Manual:
     memcached-cli --man
 
     # For available commands
-    memcached-cli help
-    memcached-cli help <command>
+    memcached@SERVER:PORT> help
+    memcached@SERVER:PORT> help <command>
 
 =head1 DESCRIPTION
 
