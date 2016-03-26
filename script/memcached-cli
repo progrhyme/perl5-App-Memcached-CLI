@@ -115,7 +115,8 @@ Comes from I<memcached/memcached-tool>, too.
 
 =item B<cachedump|dump|\cd> I<CLASS> [I<NUMBER>]
 
-Shows keys and sizes and expiration times of some items in specified slab I<CLASS>.
+Shows detailed information including expiration times of some items in specified
+slab I<CLASS>.
 
 You can specify I<NUMBER> of items to show.
 Without I<NUMBER> option, shows 20 items only by default.

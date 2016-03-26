@@ -91,7 +91,8 @@ A couple of features of following commands derives from
 
 - **cachedump|dump|\\cd** _CLASS_ \[_NUMBER_\]
 
-    Shows keys and sizes and expiration times of some items in specified slab _CLASS_.
+    Shows detailed information including expiration times of some items in specified
+    slab _CLASS_.
 
     You can specify _NUMBER_ of items to show.
     Without _NUMBER_ option, shows 20 items only by default.
