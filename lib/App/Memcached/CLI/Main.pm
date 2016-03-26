@@ -518,8 +518,8 @@ sub flush_all {
     my $delay = shift;
     my $query = 'flush_all';
     if ($delay) { $query .= " $delay"; }
-    my $response = $self->{ds}->query($query);
-    print "OK\n";
+    my $response = $self->{ds}->query_one($query);
+    print "$response\n";
     return 1;
 }
 

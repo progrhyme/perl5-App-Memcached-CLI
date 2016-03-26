@@ -193,13 +193,20 @@ sub _incr_decr {
     return $new_value;
 }
 
-sub version {
+sub version { return &query_one(shift, 'version'); }
+
+sub query_one {
     my $self  = shift;
     my $query = shift;
 
     my $socket = $self->{socket};
-    print $socket "version\r\n";
-    my $response = $self->_readline;
+    print $socket "$query\r\n";
+    my $response = eval {
+        return $self->_readline;
+    };
+    if ($@) {
+        confess "Failed to query! query: $query ERROR: " . $@;
+    }
     chomp $response;
     return $response;
 }
