@@ -245,10 +245,13 @@ sub _retrieve {
         print "Not found - @keys\n";
         return 1;
     }
+    if (@$items == 1) {
+        $items->[0]->output;
+        return 1;
+    }
     for (my $i=0; $i < scalar(@$items); $i++) {
         my $item = $items->[$i];
-        print $item->output;
-        printf "%s\n", '-' x 24 if ($i < scalar(@$items) - 1);
+        $item->output_line;
     }
     return 1;
 }
