@@ -384,13 +384,24 @@ sub cachedump {
         return;
     }
     my $response = $self->{ds}->query("stats cachedump $class $num");
+    my %expires;
     for my $line (@$response) {
         if ($line !~ m/^ITEM (\S+) \[(\d+) b; (\d+) s\]/) {
             warn "Unknown response: $line";
             next;
         }
         my %data = (key => $1, length => $2, expire => $3);
-        my $item = App::Memcached::CLI::Item->new(%data);
+        $expires{$data{key}} = \%data;
+    }
+    return 1 unless %expires;
+
+    my @keys = keys %expires;
+    my $items = App::Memcached::CLI::Item->find(
+        \@keys, $self->{ds}, command => 'gets',
+    );
+    for (my $i=0; $i < scalar(@$items); $i++) {
+        my $item = $items->[$i];
+        $item->{expire} = $expires{$item->{key}}{expire};
         $item->output_line;
     }
     return 1;
