@@ -63,7 +63,10 @@ sub _retrieve {
                 length => $3,
                 cas    => $4,
             );
+            local $SIG{ALRM} = sub { die 'Timed out to Read Socket.' };
+            alarm 3;
             read $socket, $response, $data{length};
+            alarm 0;
             $data{value} = $response;
             push @results, \%data;
         } elsif ($response =~ m/^END/) {
