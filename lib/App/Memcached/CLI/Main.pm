@@ -17,7 +17,7 @@ use App::Memcached::CLI::Help;
 use App::Memcached::CLI::Item;
 use App::Memcached::CLI::Util ':all';
 
-use version; our $VERSION = 'v0.7.1';
+use version; our $VERSION = 'v0.8.0';
 
 my $PROGRAM = basename $0;
 

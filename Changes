@@ -2,6 +2,14 @@ Revision history for Perl extension App-Memcached-CLI
 
 {{$NEXT}}
 
+v0.8.0 2016-03-26T00:29:36Z
+
+    - Change:
+      - In 'get', 'gets' print in LTSV when multiple keys found
+      - Capitalize first letter of every label when print data in LTSV
+    - Improve: in 'cachedump' show VALUE, FLAGS, CAS in addition to LENGTH and
+      EXPIRE
+
 v0.7.1 2016-03-25T17:16:56Z
 
     - Feature: implement "incr", "decr" command to add/subtract data value
