@@ -503,13 +503,16 @@ sub detail {
         print "Mode must be 'on' or 'off'!\n";
         return;
     }
-    my $response = $self->{ds}->query("stats detail $mode");
-    print "$_\n" for @$response;
+    my $response = $self->{ds}->query_one("stats detail $mode");
     my %result = (
         on  => 'Enabled',
         off => 'Disabled',
     );
-    print "$result{$mode} stats collection for detail dump.\n";
+    if ($response !~ m/^OK/) {
+        print "Seems failed to set detail $mode\n";
+        return;
+    }
+    print "OK - $result{$mode} stats collection for detail dump.\n";
     return 1;
 }
 
