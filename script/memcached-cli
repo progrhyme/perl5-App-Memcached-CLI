@@ -113,7 +113,7 @@ You can filter the parameters of stats by optional I<REGEXP> argument.
 
 Comes from I<memcached/memcached-tool>, too.
 
-=item B<cachedump|dump|\cd> I<CLASS> [I<NUMBER>]
+=item B<cachedump|\cd> I<CLASS> [I<NUMBER>]
 
 Shows detailed information including expiration times of some items in specified
 slab I<CLASS>.
@@ -136,6 +136,12 @@ See man B<memcached(1)> for details.
 Enables or disables stats collection for C<stats detail dump> reporting.
 
 I<MODE> should be either "on" or "off" to enable or to disable.
+
+=item B<dump_all>
+
+Dumps whole data in Memcached server.
+
+This command comes from I<memcached/memcached-tool>.
 
 =item B<randomset|sample> [I<NUMBER> [I<MAX_LENGTH> [I<MIN_LENGTH> [I<NAMESPACE>]]]]
 

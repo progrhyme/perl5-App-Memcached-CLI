@@ -89,7 +89,7 @@ A couple of features of following commands derives from
 
     Comes from _memcached/memcached-tool_, too.
 
-- **cachedump|dump|\\cd** _CLASS_ \[_NUMBER_\]
+- **cachedump|\\cd** _CLASS_ \[_NUMBER_\]
 
     Shows detailed information including expiration times of some items in specified
     slab _CLASS_.
@@ -112,6 +112,12 @@ A couple of features of following commands derives from
     Enables or disables stats collection for `stats detail dump` reporting.
 
     _MODE_ should be either "on" or "off" to enable or to disable.
+
+- **dump\_all**
+
+    Dumps whole data in Memcached server.
+
+    This command comes from _memcached/memcached-tool_.
 
 - **randomset|sample** \[_NUMBER_ \[_MAX\_LENGTH_ \[_MIN\_LENGTH_ \[_NAMESPACE_\]\]\]\]
 
