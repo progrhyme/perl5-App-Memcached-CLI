@@ -29,9 +29,10 @@ my %COMMAND2ALIASES = (
     display    => [qw(\d)],
     stats      => [qw(\s)],
     settings   => [qw(\c config)],
-    cachedump  => [qw(\cd dump)],
+    cachedump  => [qw(\cd)],
     detaildump => [qw(\dd)],
     detail     => [],
+    dump_all   => [],
     randomset  => [qw(sample)],
     get        => [],
     gets       => [],
@@ -533,6 +534,48 @@ sub detail {
         return;
     }
     print "OK - $result{$mode} stats collection for detail dump.\n";
+    return 1;
+}
+
+sub dump_all {
+    my $self = shift;
+    my %items;
+    my $total;
+
+    my $response = $self->{ds}->query('stats items');
+    for my $line (@$response) {
+        if ($line =~ m/^STAT items:(\d*):number (\d*)/) {
+            $items{$1} = $2;
+            $total += $2;
+        }
+    }
+
+    print  STDERR "Dumping memcache contents\n";
+    printf STDERR "  Number of buckets: %d\n", scalar(keys(%items));
+    print  STDERR "  Number of items  : $total\n";
+
+    for my $bucket (sort(keys %items)) {
+        print STDERR "Dumping bucket $bucket - " . $items{$bucket} . " total items\n";
+        $response = $self->{ds}->query("stats cachedump $bucket $items{$bucket}");
+
+        my %expires;
+        for my $line (@$response) {
+            # Ex) ITEM foo [6 b; 1176415152 s]
+            if ($line =~ m/^ITEM (\S+) \[.* (\d+) s\]/) {
+                $expires{$1} = $2;
+            }
+        }
+
+        my @keys_bucket = keys %expires;
+        while (my @keys = splice(@keys_bucket, 0, 20)) {
+            my $list = $self->{ds}->get(\@keys);
+            for my $d (@$list) {
+                print "add $d->{key} $d->{flags} $expires{$d->{key}} $d->{length}\r\n";
+                print "$d->{value}\r\n";
+            }
+        }
+    }
+
     return 1;
 }
 

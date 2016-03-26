@@ -77,6 +77,10 @@ Description:
 EODESC
     },
     +{
+        command => 'dump_all',
+        summary => 'Dump whole server data',
+    },
+    +{
         command => 'randomset',
         summary => 'Generate sample data and SET them',
         description => <<'EODESC',
