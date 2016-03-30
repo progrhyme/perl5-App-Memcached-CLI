@@ -237,7 +237,7 @@ Multi-lined queries like C<set> are not supported.
 
 =item B<version>
 
-Shows memcahed server version.
+Shows memcached server version.
 
 =item B<quit|exit|\q>
 
