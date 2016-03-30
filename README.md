@@ -217,7 +217,7 @@ A couple of features of following commands derives from
 
 - **version**
 
-    Shows memcahed server version.
+    Shows memcached server version.
 
 - **quit|exit|\\q**
 
