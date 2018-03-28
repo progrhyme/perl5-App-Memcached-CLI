@@ -69,11 +69,11 @@
          "web" : "https://github.com/progrhyme/perl5-App-Memcached-CLI"
       }
    },
-   "version" : "v0.9.4",
+   "version" : "v0.9.5",
    "x_authority" : "cpan:KEYAMB",
    "x_contributors" : [
       "Syohei YOSHIDA <syohex@gmail.com>",
-      "progrhyme <progrhyme@gmail.com>"
+      "key-amb <yasutake.kiyoshi@gmail.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 2.27400_02"
 }
