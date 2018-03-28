@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI.svg?branch=master)](https://travis-ci.org/key-amb/perl5-App-Memcached-CLI)
+[![Build Status](https://travis-ci.org/progrhyme/perl5-App-Memcached-CLI.svg?branch=master)](https://travis-ci.org/progrhyme/perl5-App-Memcached-CLI)
 # NAME
 
 **memcached-cli** - Interactive/Batch CLI for Memcached
@@ -247,11 +247,11 @@ A couple of features of following commands derives from
 
 # AUTHORS
 
-YASUTAKE Kiyoshi <yasutake.kiyoshi@gmail.com>
+IKEDA Kiyoshi <progrhyme@gmail.com>
 
 # LICENSE
 
-Copyright (C) 2015 YASUTAKE Kiyoshi.
+Copyright (C) 2015-2017 IKEDA Kiyoshi.
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.  That means either (a) the GNU General Public

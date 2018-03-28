@@ -1,10 +1,10 @@
 {
    "abstract" : "Interactive/Batch CLI for Memcached",
    "author" : [
-      "YASUTAKE Kiyoshi <yasutake.kiyoshi@gmail.com>"
+      "IKEDA Kiyoshi <progrhyme@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.0.1, CPAN::Meta::Converter version 2.143240",
+   "generated_by" : "Minilla/v3.0.16, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -60,15 +60,20 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/key-amb/perl5-App-Memcached-CLI/issues"
+         "web" : "https://github.com/progrhyme/perl5-App-Memcached-CLI/issues"
       },
-      "homepage" : "https://github.com/key-amb/perl5-App-Memcached-CLI",
+      "homepage" : "https://github.com/progrhyme/perl5-App-Memcached-CLI",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/key-amb/perl5-App-Memcached-CLI.git",
-         "web" : "https://github.com/key-amb/perl5-App-Memcached-CLI"
+         "url" : "git://github.com/progrhyme/perl5-App-Memcached-CLI.git",
+         "web" : "https://github.com/progrhyme/perl5-App-Memcached-CLI"
       }
    },
    "version" : "v0.9.4",
-   "x_authority" : "cpan:KEYAMB"
+   "x_authority" : "cpan:KEYAMB",
+   "x_contributors" : [
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "progrhyme <progrhyme@gmail.com>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27400_02"
 }
